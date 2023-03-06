@@ -20,5 +20,5 @@
 🔑 Fully Typed APIs  
 
 ## Run config
-npm run dev
-
+1. Install node modules with "npm i"
+2. Run "npm run dev"
