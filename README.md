@@ -1,4 +1,4 @@
-# electron-vite-react
+# FERI Chat App (Electron + React + Vite) Prototype
 
 ## 👀 Overview
 
@@ -9,3 +9,16 @@
 🔩 Supports C/C++ native addons  
 🐞 Debugger configuration included  
 🖥 Easy to implement multiple windows  
+
+## Vite ⚡
+
+💡 Instant Server Start  
+⚡️ Lightning Fast HMR  
+🛠️ Rich Features  
+📦 Optimized Build  
+🔩 Universal Plugin Interface  
+🔑 Fully Typed APIs  
+
+## Run config
+npm run dev
+
