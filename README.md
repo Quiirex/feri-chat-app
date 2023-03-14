@@ -8,5 +8,9 @@
 
 ## Konfiguracija
 
-1. Install node modules with "npm i"
-2. Run "npm run dev"
+1. Naloži node module z "npm i"
+2. Zaženi "npm run dev"
+
+## Izgradnja binarnih datotek
+
+1. Zaženi "npm run build"
