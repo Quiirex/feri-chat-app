@@ -1,8 +1,8 @@
 {
-  "name": "electron-vite-react",
+  "name": "feri-chat-app",
   "version": "2.1.0",
   "main": "dist-electron/main/index.js",
-  "description": "Electron Vite React boilerplate.",
+  "description": "Electron + Vite + React",
   "author": "Luka Mlinarič",
   "license": "MIT",
   "private": true,
