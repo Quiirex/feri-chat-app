@@ -69,7 +69,6 @@ form button {
   background-color: rgb(56, 56, 143);
 }
 
-
 input {
   line-height: 1.5;
   width: 100%;
@@ -99,16 +98,12 @@ button:disabled {
   cursor: not-allowed;
 }
 
-
 .sign-in {
   color: #282c34;
   background: white;
   max-width: 400px;
   margin: 0 auto;
 }
-
-
-
 
 ul,
 li {
@@ -131,7 +126,6 @@ p {
   display: flex;
   align-items: center;
 }
-
 
 .sent {
   flex-direction: row-reverse;

@@ -2,9 +2,9 @@
 
 ## Uporabljene tehnologije
 
-* [Electron](https://www.electronjs.org/)
-* [React](https://reactjs.org/)
-* [Vite](https://vitejs.dev/)
+- [Electron](https://www.electronjs.org/)
+- [React](https://reactjs.org/)
+- [Vite](https://vitejs.dev/)
 
 ## Konfiguracija
 

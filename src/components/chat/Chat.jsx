@@ -10,13 +10,13 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 firebase.initializeApp({
-    apiKey: "AIzaSyAmO69IEyDoPVY1WYWG_1iceasVA7q_j2w",
-    authDomain: "ferichatapp.firebaseapp.com",
-    projectId: "ferichatapp",
-    storageBucket: "ferichatapp.appspot.com",
-    messagingSenderId: "25456877507",
-    appId: "1:25456877507:web:563c818275fdfd9bd5e776",
-    measurementId: "G-P34HYFXSTX"
+  apiKey: 'AIzaSyAmO69IEyDoPVY1WYWG_1iceasVA7q_j2w',
+  authDomain: 'ferichatapp.firebaseapp.com',
+  projectId: 'ferichatapp',
+  storageBucket: 'ferichatapp.appspot.com',
+  messagingSenderId: '25456877507',
+  appId: '1:25456877507:web:563c818275fdfd9bd5e776',
+  measurementId: 'G-P34HYFXSTX',
 });
 
 const auth = firebase.auth();
@@ -24,89 +24,107 @@ const firestore = firebase.firestore();
 const analytics = firebase.analytics();
 
 function Chat() {
-    const [user] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
-    return (
-        <div className="App">
-            <header>
-                <SignOut />
-            </header>
+  return (
+    <div className="App">
+      <header>
+        <SignOut />
+      </header>
 
-            <section>
-                <ChatRoom />
-            </section>
-        </div>
-    );
+      <section>
+        <ChatRoom />
+      </section>
+    </div>
+  );
 }
 
 function SignIn() {
-    useEffect(() => {
-        auth.signInAnonymously();
-    }, []);
+  useEffect(() => {
+    auth.signInAnonymously();
+  }, []);
 
-    return (
-        <>
-            <p>Do not violate the community guidelines or you will be banned for life!</p>
-        </>
-    );
+  return (
+    <>
+      <p>
+        Do not violate the community guidelines or you will be banned for life!
+      </p>
+    </>
+  );
 }
 
 function SignOut() {
-    return auth.currentUser && (
-        <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
+  return (
+    auth.currentUser && (
+      <button className="sign-out" onClick={() => auth.signOut()}>
+        Sign Out
+      </button>
     )
+  );
 }
 
 function ChatRoom() {
-    const dummy = useRef();
-    const messagesRef = firestore.collection('messages');
-    const query = messagesRef.orderBy('createdAt').limit(25);
+  const dummy = useRef();
+  const messagesRef = firestore.collection('messages');
+  const query = messagesRef.orderBy('createdAt').limit(25);
 
-    const [messages] = useCollectionData(query, { idField: 'id' });
-    const [formValue, setFormValue] = useState('');
+  const [messages] = useCollectionData(query, { idField: 'id' });
+  const [formValue, setFormValue] = useState('');
 
-    const sendMessage = async (e) => {
-        e.preventDefault();
+  const sendMessage = async (e) => {
+    e.preventDefault();
 
-        const { uid, photoURL } = auth.currentUser;
+    const { uid, photoURL } = auth.currentUser;
 
-        await messagesRef.add({
-            text: formValue,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            uid,
-            photoURL
-        });
+    await messagesRef.add({
+      text: formValue,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      uid,
+      photoURL,
+    });
 
-        setFormValue('');
-        dummy.current.scrollIntoView({ behavior: 'smooth' });
-    };
+    setFormValue('');
+    dummy.current.scrollIntoView({ behavior: 'smooth' });
+  };
 
-    return (
-        <>
-            <main>
-                {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-                <span ref={dummy}></span>
-            </main>
-            <form onSubmit={sendMessage}>
-                <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="napiši nekaj..." />
-                <button type="submit" disabled={!formValue}>🕊️</button>
-            </form>
-        </>
-    );
+  return (
+    <>
+      <main>
+        {messages &&
+          messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
+        <span ref={dummy}></span>
+      </main>
+      <form onSubmit={sendMessage}>
+        <input
+          value={formValue}
+          onChange={(e) => setFormValue(e.target.value)}
+          placeholder="napiši nekaj..."
+        />
+        <button type="submit" disabled={!formValue}>
+          🕊️
+        </button>
+      </form>
+    </>
+  );
 }
 
 function ChatMessage(props) {
-    const { text, uid, photoURL } = props.message;
+  const { text, uid, photoURL } = props.message;
+  const messageClass =
+    auth.currentUser && uid === auth.currentUser.uid ? 'sent' : 'received';
 
-    // add a check to make sure auth.currentUser is not null
-    const messageClass = auth.currentUser && uid === auth.currentUser.uid ? 'sent' : 'received';
-
-    return (<>
-        <div className={`message ${messageClass}`}>
-            <img src={'http://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png'} />
-            <p>{text}</p>
-        </div>
-    </>)
+  return (
+    <>
+      <div className={`message ${messageClass}`}>
+        <img
+          src={
+            'http://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png'
+          }
+        />
+        <p>{text}</p>
+      </div>
+    </>
+  );
 }
 
 export default Chat;
