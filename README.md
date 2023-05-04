@@ -6,11 +6,16 @@
 - [React](https://reactjs.org/)
 - [Vite](https://vitejs.dev/)
 
-## Konfiguracija
+## Zagon v dev načinu
 
 1. Naloži node module z "npm i"
 2. Zaženi "npm run dev"
 
-## Izgradnja binarnih datotek
+## Izgradnja binarnih datotek za produkcijo
 
 1. Zaženi "npm run build"
+
+## Zagon E2E testov
+
+1. Zaženi "npm run pree2e" (izgradnja binarnih datotek za testiranje)
+2. Zaženi "npm run e2e"
