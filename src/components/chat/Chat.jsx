@@ -89,6 +89,9 @@ function ChatRoom() {
 
   return (
     <>
+      <h1 className="text-3xl font-bold underline text-blue-300">
+        Tailwind deluje!
+      </h1>
       <main>
         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
