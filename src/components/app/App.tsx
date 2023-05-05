@@ -1,7 +1,7 @@
 import './App.scss';
 import Home from '../home/Home';
 import Login from '../login/Login';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
