@@ -26,7 +26,6 @@
 
   .formWrapper {
     padding: 30px 60px;
-    border-radius: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -49,9 +48,6 @@
         border-radius: 15px;
         width: 250px;
         border-bottom: 1px solid #026179;
-        &::placeholder {
-          color: rgb(175, 175, 175);
-        }
       }
 
       button {
@@ -59,7 +55,6 @@
         border-radius: 30px;
         padding: 10px;
         font-weight: bold;
-        border: none;
       }
     }
   }
