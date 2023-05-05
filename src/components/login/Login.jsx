@@ -4,7 +4,6 @@ const Login = () => {
             <div className="formContainer">
                 <div className="formWrapper">
                     <span className="logo"> FERI Chat </span>
-                    <span className="title"> Login </span>
                     <form>
                         <input className="email" placeholder="Email" type="email" />
                         <input className="password" placeholder="Password" type="password" />
