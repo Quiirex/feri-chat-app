@@ -1,4 +1,9 @@
+import { useNavigate } from "react-router-dom";
+
 const Navbar = () => {
+
+  const navigate = useNavigate();
+
   return (
     <div className="navbar">
       <span className="logo">FERI Chat App</span>
@@ -8,7 +13,7 @@ const Navbar = () => {
           alt="Avatar"
         />
         <span>User</span>
-        <button>Log out</button>
+        <button onClick={() => navigate('/login')} >Log out</button>
       </div>
     </div>
   );
