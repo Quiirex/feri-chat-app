@@ -63,6 +63,7 @@
   "dependencies": {
     "firebase": "^9.17.2",
     "react-firebase-hooks": "^5.1.1",
+    "react-router-dom": "^6.11.1",
     "vite-tsconfig-paths": "^4.0.5"
   }
 }
