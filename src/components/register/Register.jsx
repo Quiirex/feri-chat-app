@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import './Register.scss';
 
 const Register = () => {
   const navigate = useNavigate();

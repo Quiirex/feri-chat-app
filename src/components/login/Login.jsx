@@ -1,4 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom';
+import './Login.scss';
 
 const Login = () => {
   const navigate = useNavigate();
