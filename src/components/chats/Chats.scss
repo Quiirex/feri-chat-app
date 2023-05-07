@@ -3,11 +3,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: white;
+  color: black;
   cursor: pointer;
 
   &:hover {
-    background-color: #2f2d52;
+    background-color: #dedede;
   }
 
   img {
@@ -24,7 +24,7 @@
     }
     p {
       font-size: 14px;
-      color: lightgray;
+      color: rgb(112, 112, 112);
     }
   }
 }
