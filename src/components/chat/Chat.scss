@@ -3,12 +3,20 @@
 
   .chatInfo {
     height: 50px;
-    background-color: #5d5b8d;
+    background-color: #006385;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px;
-    color: lightgray;
+    color: white;
+    font-weight: 500;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 99, 133, 1) 0%,
+      rgb(0, 84, 111) 100%
+    );
   }
 
   .chatIcons {
@@ -16,7 +24,6 @@
     gap: 10px;
 
     img {
-      height: 24px;
       cursor: pointer;
     }
   }

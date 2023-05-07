@@ -1,0 +1,50 @@
+.formContainer {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fffffff4;
+
+  .formWrapper {
+    padding: 30px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+
+    .logo {
+      color: #026179;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      input {
+        padding: 15px;
+        border: none;
+        border-radius: 15px;
+        width: 250px;
+        border-bottom: 1px solid #006385;
+      }
+
+      button {
+        background-color: #006385;
+        border-radius: 30px;
+        padding: 10px;
+        font-weight: bold;
+      }
+    }
+  }
+  p {
+    color: rgb(113, 113, 113);
+  }
+  .link {
+    color: #006385;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
