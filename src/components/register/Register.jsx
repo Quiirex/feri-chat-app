@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth, storage } from '@/services/firebase';
+import { auth, db, storage } from '@/services/firebase';
 import {
   getDownloadURL,
   ref,
@@ -44,42 +44,33 @@ const Register = () => {
       );
 
       const file = e.target[5].files[0];
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
 
-      const blobPromise = new Promise((resolve) => {
-        reader.onload = () => {
-          const blob = new Blob([reader.result], { type: file.type });
-          resolve(blob);
-        };
-      });
+      await uploadBytesResumable(storageRef, file).then(() => {
+        getDownloadURL(storageRef).then(async (url) => {
+          try {
+            await updateProfile(registrationResult.user, {
+              displayName: `${inputs.firstname} ${inputs.lastname}`,
+              photoURL: url,
+            });
 
-      const blob = await blobPromise;
+            await setDoc(doc(db, 'users', registrationResult.user.uid), {
+              firstname: inputs.firstname,
+              lastname: inputs.lastname,
+              email: inputs.email,
+              avatar: url,
+              role: 'Student',
+            });
 
-      console.log(blob);
+            await setDoc(doc(db, 'userChats', registrationResult.user.uid), {});
 
-      await uploadBytesResumable(storageRef, blob).then(() => {
-        getDownloadURL.then(async (url) => {
-          await updateProfile(registrationResult.user, {
-            displayName: `${inputs.firstname} ${inputs.lastname}`,
-            photoURL: url,
-          });
-
-          await setDoc(doc(db, 'users', registrationResult.user.uid), {
-            uuid: registrationResult.user.uid,
-            firstname: inputs.firstname,
-            lastname: inputs.lastname,
-            email: inputs.email,
-            avatar: url,
-          });
-
-          await setDoc(doc(db, 'users', registrationResult.user.uid), {});
-
-          navigate('/');
+            navigate('/login');
+          } catch (error) {
+            alert(error.message, error.stack);
+          }
         });
       });
     } catch (error) {
-      alert(error.message);
+      alert(error.message, error.stack);
     }
   };
 
