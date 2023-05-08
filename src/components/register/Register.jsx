@@ -10,6 +10,7 @@ const Register = () => {
     email: '',
     password: '',
     passwordAgain: '',
+    avatar: '',
   });
 
   const handleChange = (e) => {
@@ -68,6 +69,15 @@ const Register = () => {
               onChange={handleChange}
               placeholder="Repeat Password"
               type="password"
+            />
+            <input
+              required
+              className="avatar"
+              name="avatar"
+              value={inputs.avatar}
+              onChange={handleChange}
+              type="file"
+              id="file"
             />
             <button className="registerButton">Register</button>
           </form>
