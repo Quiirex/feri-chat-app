@@ -72,7 +72,7 @@ const Register = () => {
             />
             <input
               required
-              className="avatar"
+              className="file-input"
               name="avatar"
               value={inputs.avatar}
               onChange={handleChange}
