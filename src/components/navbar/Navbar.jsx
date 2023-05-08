@@ -1,3 +1,4 @@
+import { auth } from '@/services/firebase';
 import { useNavigate } from 'react-router-dom';
 import './Navbar.scss';
 

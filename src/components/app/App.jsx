@@ -2,17 +2,27 @@ import './App.scss';
 import Home from '../home/Home';
 import Login from '../login/Login';
 import Register from '../register/Register';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import ProtectedRoute from '@/routes/PrivateRoute';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="app">
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
