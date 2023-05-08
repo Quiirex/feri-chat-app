@@ -61,7 +61,7 @@
     "node": "^14.18.0 || >=16.0.0"
   },
   "dependencies": {
-    "firebase": "^9.17.2",
+    "firebase": "^9.9.4",
     "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^6.11.1",
     "vite-tsconfig-paths": "^4.0.5"

@@ -1,5 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth, storage } from '@/services/firebase';
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from 'firebase/storage';
+import { doc, setDoc } from 'firebase/firestore';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -19,9 +28,59 @@ const Register = () => {
     setInputs({ ...inputs, [name]: value });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    navigate('/');
+
+    try {
+      const registrationResult = await createUserWithEmailAndPassword(
+        auth,
+        inputs.email,
+        inputs.password
+      );
+
+      const storageRef = ref(
+        storage,
+        `avatars/${registrationResult.user.uid}/${new Date().getTime()}`
+      );
+
+      const file = e.target[5].files[0];
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+
+      const blobPromise = new Promise((resolve) => {
+        reader.onload = () => {
+          const blob = new Blob([reader.result], { type: file.type });
+          resolve(blob);
+        };
+      });
+
+      const blob = await blobPromise;
+
+      console.log(blob);
+
+      await uploadBytesResumable(storageRef, blob).then(() => {
+        getDownloadURL.then(async (url) => {
+          await updateProfile(registrationResult.user, {
+            displayName: `${inputs.firstname} ${inputs.lastname}`,
+            photoURL: url,
+          });
+
+          await setDoc(doc(db, 'users', registrationResult.user.uid), {
+            uuid: registrationResult.user.uid,
+            firstname: inputs.firstname,
+            lastname: inputs.lastname,
+            email: inputs.email,
+            avatar: url,
+          });
+
+          await setDoc(doc(db, 'users', registrationResult.user.uid), {});
+
+          navigate('/');
+        });
+      });
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
