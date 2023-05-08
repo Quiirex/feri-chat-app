@@ -16,12 +16,14 @@ jobs:
         with:
           ref: master
       - name: Merge changes
-        uses: peter-evans/create-pull-request@v3
+        uses: octokit/request-action@v2.x
         with:
-          title: Merge dev into master
-          commit-message: Merge pull request #${{ github.event.pull_request.number }} from dev into master
-          branch: master
-          delete-branch: false
-          body: |
-            This pull request merges changes from the dev branch into the master branch.
+          route: PUT /repos/${{ github.repository }}/merges
+          mediaType: '{"previews":["shadow-cat"]}'
+          requestBody: |
+            {
+              "base": "master",
+              "head": "dev",
+              "commit_message": "Merge dev into master"
+            }
           token: ${{ secrets.TOKEN }}
