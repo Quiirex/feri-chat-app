@@ -1,9 +1,6 @@
-import { useNavigate } from 'react-router-dom';
 import { auth } from '@/services/firebase';
 
 const Navbar = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="navbar">
       <span className="logo">FERI Chat App</span>
