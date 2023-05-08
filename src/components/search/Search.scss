@@ -1,0 +1,19 @@
+.search {
+  border-bottom: 1px solid gray;
+  background-color: #fffffff4;
+
+  .searchForm {
+    padding: 10px;
+
+    input {
+      background-color: transparent;
+      border: none;
+      color: black;
+      outline: none;
+
+      &::placeholder {
+        color: lightgray;
+      }
+    }
+  }
+}

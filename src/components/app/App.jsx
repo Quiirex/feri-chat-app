@@ -4,6 +4,7 @@ import Login from '../login/Login';
 import Register from '../register/Register';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from '@/routes/PrivateRoute';
+
 function App() {
   return (
     <div className="app">

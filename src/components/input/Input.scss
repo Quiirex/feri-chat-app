@@ -1,0 +1,47 @@
+.input {
+  height: 50px;
+  background-color: #fffffff4;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+
+  input {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: black;
+    font-size: 18px;
+    background-color: transparent;
+
+    &::placeholder {
+      color: lightgray;
+    }
+  }
+
+  .send {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    img {
+      cursor: pointer;
+      width: 40px;
+    }
+
+    button {
+      border: none;
+      padding: 5px 8px;
+      color: white;
+      background-color: #006385;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #004d5c;
+    }
+  }
+}

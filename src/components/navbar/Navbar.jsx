@@ -1,16 +1,20 @@
 import { auth } from '@/services/firebase';
+import { useNavigate } from 'react-router-dom';
+import './Navbar.scss';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="navbar">
-      <span className="logo">FERI Chat App</span>
+      <span className="logo">FERI Chat</span>
       <div className="user">
         <img
-          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+          src="https://wikibio.in/wp-content/uploads/2021/12/Hasbulla.jpg"
           alt="Avatar"
         />
         <span>User</span>
-        <button onClick={() => auth.signOut()}>Log out</button>
+        <button onClick={() => navigate('/login')}>Log out</button>
       </div>
     </div>
   );

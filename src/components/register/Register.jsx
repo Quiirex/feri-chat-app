@@ -9,6 +9,7 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
+import './Register.scss';
 
 const Register = () => {
   const navigate = useNavigate();

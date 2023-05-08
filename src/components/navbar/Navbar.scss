@@ -1,17 +1,20 @@
 .navbar {
   display: flex;
   align-items: center;
-  background-color: #2f2d52;
+  background-color: #006385;
   height: 50px;
   padding: 10px;
   justify-content: space-between;
-  color: #ddddf7;
+  color: #ffffff;
+  border-bottom: 1px solid black;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 99, 133, 1) 0%,
+    rgb(0, 84, 111) 100%
+  );
 
   .logo {
     font-weight: bold;
-    @include tablet {
-      display: none;
-    }
   }
 
   .user {
@@ -19,7 +22,7 @@
     gap: 10px;
 
     img {
-      background-color: #ddddf7;
+      background-color: #ffffff;
       height: 24px;
       width: 24px;
       border-radius: 50%;
@@ -27,15 +30,17 @@
     }
 
     button {
-      background-color: #5d5b8d;
-      color: #ddddf7;
+      background-color: #003d52;
+      color: white;
       font-size: 10px;
       border: none;
       cursor: pointer;
-      @include tablet {
-        position: absolute;
-        bottom: 10px;
-      }
+      padding: 5px 5px;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #002e3d;
     }
   }
 }

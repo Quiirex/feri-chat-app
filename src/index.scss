@@ -4,63 +4,10 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-}
-
-.formContainer {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .formWrapper {
-    padding: 30px 60px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-
-    .logo {
-      color: #026179;
-      font-weight: bold;
-      font-size: 24px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-
-      input {
-        padding: 15px;
-        border: none;
-        border-radius: 15px;
-        width: 250px;
-        border-bottom: 1px solid #026179;
-      }
-
-      button {
-        background-color: #026179;
-        border-radius: 30px;
-        padding: 10px;
-        font-weight: bold;
-      }
-
-      .error {
-        padding-left: 10px;
-        color: #ff4242;
-      }
-    }
-  }
 }
