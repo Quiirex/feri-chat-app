@@ -14,7 +14,7 @@ const Navbar = () => {
           alt="Avatar"
         />
         <span>User</span>
-        <button onClick={() => navigate('/login')}>Log out</button>
+        <button onClick={() => auth.signOut()}>Log out</button>
       </div>
     </div>
   );
