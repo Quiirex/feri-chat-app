@@ -5,7 +5,7 @@ import './samples/node-api';
 import './index.scss';
 import { AuthContextProvider } from './context/AuthContext';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
     <React.StrictMode>
       <App />
