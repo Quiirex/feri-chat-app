@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   collection,
   query,
@@ -78,6 +78,14 @@ const Search = () => {
     setUser(null);
     setUsername('');
   };
+
+  useEffect(() => {
+    // Set user state to null when username state is empty
+    if (username === '') {
+      setUser(null);
+    }
+  }, [username]);
+
   return (
     <div className="search">
       <div className="searchForm">
