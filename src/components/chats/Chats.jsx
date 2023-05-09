@@ -42,7 +42,7 @@ const Chats = () => {
             <img src={chat[1].userInfo.photoURL} alt="" />
             <div className="userChatInfo">
               <span>{chat[1].userInfo.displayName}</span>
-              <p>{chat[1].lastMessage?.text}</p>
+              <p>{chat[1].lastMessage?.text.slice(0, 25) + '...'}</p>
             </div>
           </div>
         ))}
