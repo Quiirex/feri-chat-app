@@ -104,7 +104,21 @@ const Input = () => {
         <label htmlFor="file">
           <img src={Img} alt="" />
         </label> */}
-        <button onClick={handleSend}>Send</button>
+        <button onClick={handleSend}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-5 w-5 mr-1.5"
+          >
+            <path d="M2 22L13 11" />
+            <path d="M2 22L9 2L13 11L22 15L2 22Z" />
+          </svg>
+        </button>
       </div>
     </div>
   );
