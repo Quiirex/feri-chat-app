@@ -20,7 +20,7 @@ const Register = () => {
     email: '',
     password: '',
     passwordAgain: '',
-    avatar: '',
+    photoURL: '',
   });
 
   const handleChange = (e) => {
@@ -39,37 +39,39 @@ const Register = () => {
         inputs.password
       );
 
-      const storageRef = ref(
-        storage,
-        `avatars/${registrationResult.user.uid}/${new Date().getTime()}`
-      );
+      // const storageRef = ref(
+      //   storage,
+      //   `photoURLs/${registrationResult.user.uid}/${new Date().getTime()}`
+      // );
 
-      const file = e.target[5].files[0];
+      // const file = e.target[5].files[0];
 
-      await uploadBytesResumable(storageRef, file).then(() => {
-        getDownloadURL(storageRef).then(async (url) => {
-          try {
-            await updateProfile(registrationResult.user, {
-              displayName: `${inputs.firstname} ${inputs.lastname}`,
-              photoURL: url,
-            });
-
-            await setDoc(doc(db, 'users', registrationResult.user.uid), {
-              firstname: inputs.firstname,
-              lastname: inputs.lastname,
-              email: inputs.email,
-              avatar: url,
-              role: 'Student',
-            });
-
-            await setDoc(doc(db, 'userChats', registrationResult.user.uid), {});
-
-            navigate('/login');
-          } catch (error) {
-            alert(error.message, error.stack);
-          }
+      // await uploadBytesResumable(storageRef, file).then(() => {
+      //   getDownloadURL(storageRef).then(async (url) => {
+      try {
+        await updateProfile(registrationResult.user, {
+          displayName: inputs.firstname + ' ' + inputs.lastname,
+          photoURL: 'https://static.thenounproject.com/png/363640-200.png',
         });
-      });
+
+        await setDoc(doc(db, 'users', registrationResult.user.uid), {
+          uid: registrationResult.user.uid,
+          displayName: inputs.firstname + ' ' + inputs.lastname,
+          firstname: inputs.firstname,
+          lastname: inputs.lastname,
+          email: inputs.email,
+          photoURL: 'https://static.thenounproject.com/png/363640-200.png',
+          role: 'Student',
+        });
+
+        await setDoc(doc(db, 'userChats', registrationResult.user.uid), {});
+
+        navigate('/login');
+      } catch (error) {
+        alert(error.message, error.stack);
+      }
+      //   });
+      // });
     } catch (error) {
       alert(error.message, error.stack);
     }
@@ -122,10 +124,10 @@ const Register = () => {
               type="password"
             />
             <input
-              required
+              // required
               className="file-input"
-              name="avatar"
-              value={inputs.avatar}
+              name="photoURL"
+              value={inputs.photoURL}
               onChange={handleChange}
               type="file"
               id="file"

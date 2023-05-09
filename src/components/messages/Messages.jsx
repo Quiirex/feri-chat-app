@@ -1,42 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { ChatContext } from '@/context/ChatContext';
+import { db } from '@/services/firebase';
 import Message from '../message/Message';
 import './Messages.scss';
 
-const Messages = ({ chatId }) => {
+const Messages = () => {
   const [messages, setMessages] = useState([]);
+  const { data } = useContext(ChatContext);
 
   useEffect(() => {
-    // Simulate fetching messages from Firebase
-    const dummyMessages = [
-      { id: '1', senderId: 'user1', text: 'Pozdravljen!', img: null },
-      {
-        id: '2',
-        senderId: 'user1',
-        text: 'Trenutno še ni mogoče pošiljati dejanskih sporočil.',
-        img: null,
-      },
-      {
-        id: '3',
-        senderId: 'user1',
-        text: 'Zato je to samo primer končnega izgleda.',
-        img: null,
-      },
-      {
-        id: '4',
-        senderId: 'user2',
-        text: 'Okej, kul!',
-        img: null,
-      },
-    ];
+    if (data.chatId !== 'null') {
+      const unSub = onSnapshot(doc(db, 'chats', data.chatId), (doc) => {
+        doc.exists() && setMessages(doc.data().messages);
+      });
 
-    setMessages(dummyMessages);
-  }, [chatId]);
+      return () => {
+        unSub();
+      };
+    }
+  }, [data.chatId]);
 
   return (
     <div className="messages">
-      {messages.map((m) => (
-        <Message message={m} key={m.id} senderId={m.senderId} />
-      ))}
+      {messages.length === 0 || data.chatId === 'null' ? (
+        <div className="noMessages">Pick a person to chat with!</div>
+      ) : (
+        messages.map((m) => <Message message={m} key={m.id} />)
+      )}
     </div>
   );
 };
