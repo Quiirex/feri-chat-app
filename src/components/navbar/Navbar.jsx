@@ -1,20 +1,19 @@
+import React, { useContext } from 'react';
+import { signOut } from 'firebase/auth';
 import { auth } from '@/services/firebase';
-import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '@/context/AuthContext';
 import './Navbar.scss';
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <div className="navbar">
-      <span className="logo">FERI Chat</span>
+      <span className="logo">Lama Chat</span>
       <div className="user">
-        <img
-          src="https://wikibio.in/wp-content/uploads/2021/12/Hasbulla.jpg"
-          alt="Avatar"
-        />
-        <span>User</span>
-        <button onClick={() => auth.signOut()}>Log out</button>
+        <img src={currentUser.photoURL} alt="avatar" />
+        <span>{currentUser.displayName}</span>
+        <button onClick={() => signOut(auth)}>logout</button>
       </div>
     </div>
   );
