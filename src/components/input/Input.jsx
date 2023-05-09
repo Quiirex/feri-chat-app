@@ -11,7 +11,7 @@ import {
 import { db, storage } from '../../services/firebase';
 import { v4 as uuid } from 'uuid';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import Img from '../../assets/img.png';
+// import Img from '../../assets/img.png';
 import './Input.scss';
 
 const Input = () => {
@@ -22,6 +22,10 @@ const Input = () => {
   const { data } = useContext(ChatContext);
 
   const handleSend = async () => {
+    if (!text) {
+      return;
+    }
+
     if (img) {
       const storageRef = ref(storage, uuid());
 
@@ -46,6 +50,9 @@ const Input = () => {
         }
       );
     } else {
+      setText('');
+      setImg(null);
+
       await updateDoc(doc(db, 'chats', data.chatId), {
         messages: arrayUnion({
           id: uuid(),
@@ -69,20 +76,26 @@ const Input = () => {
       },
       [data.chatId + '.date']: serverTimestamp(),
     });
-
-    setText('');
-    setImg(null);
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && text) {
+      handleSend();
+    }
+  };
+
   return (
     <div className="input">
       <input
         type="text"
         placeholder="Type a message..."
         onChange={(e) => setText(e.target.value)}
+        onKeyDown={handleKeyDown}
         value={text}
       />
       <div className="send">
-        <input
+        {/* TODO: Add back when image upload is working */}
+        {/* <input
           type="file"
           style={{ display: 'none' }}
           id="file"
@@ -90,7 +103,7 @@ const Input = () => {
         />
         <label htmlFor="file">
           <img src={Img} alt="" />
-        </label>
+        </label> */}
         <button onClick={handleSend}>Send</button>
       </div>
     </div>
