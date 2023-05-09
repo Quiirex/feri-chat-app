@@ -22,7 +22,7 @@ const Navbar = () => {
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
-            class="feather feather-log-out h-4 w-4"
+            className="feather feather-log-out h-4 w-4"
             id="showlogout"
           >
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
