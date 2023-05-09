@@ -27,7 +27,6 @@ const Message = ({ message }) => {
           }
           alt="avatar"
         />
-        <span>just now</span>
       </div>
       <div className="messageContent">
         <p>{message.text}</p>
