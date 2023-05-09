@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import More from '../../assets/more.png';
 import Messages from '../messages/Messages';
 import Input from '../input/Input';

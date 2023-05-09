@@ -8,7 +8,7 @@ import {
   Timestamp,
   updateDoc,
 } from 'firebase/firestore';
-import { db, storage } from '../firebase';
+import { db, storage } from '../../services/firebase';
 import { v4 as uuid } from 'uuid';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import Img from '../../assets/img.png';
@@ -82,7 +82,6 @@ const Input = () => {
         value={text}
       />
       <div className="send">
-        <img src={Attach} alt="" />
         <input
           type="file"
           style={{ display: 'none' }}
