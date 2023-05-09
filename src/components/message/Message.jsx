@@ -1,7 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
+import { AuthContext } from '@/context/AuthContext';
+import { ChatContext } from '@/context/ChatContext';
 import './Message.scss';
 
-const Message = ({ message, currentUser, senderId }) => {
+const Message = ({ message }) => {
+  const { currentUser } = useContext(AuthContext);
+  const { data } = useContext(ChatContext);
+
   const ref = useRef();
 
   useEffect(() => {
@@ -9,18 +14,20 @@ const Message = ({ message, currentUser, senderId }) => {
   }, [message]);
 
   return (
-    <div ref={ref} className={`message ${senderId == 'user2' && 'owner'}`}>
+    <div
+      ref={ref}
+      className={`message ${message.senderId === currentUser.uid && 'owner'}`}
+    >
       <div className="messageInfo">
         <img
           src={
-            message.senderId === 'user2'
-              ? 'https://wikibio.in/wp-content/uploads/2021/12/Hasbulla.jpg'
-              : 'https://media.licdn.com/dms/image/C4D03AQGIScwFoM74YQ/profile-displayphoto-shrink_800_800/0/1523881590135?e=2147483647&v=beta&t=JC8yYa1iTGen_uPSkIh-T7mNAZISmGr8il3hqe_wln8'
+            message.senderId === currentUser.uid
+              ? currentUser.photoURL
+              : data.user.photoURL
           }
-          alt="Avatar"
+          alt="avatar"
         />
         <span>just now</span>
-        {/* Tukaj kasneje dodamo dejanski čas pošiljanja sporočila */}
       </div>
       <div className="messageContent">
         <p>{message.text}</p>
