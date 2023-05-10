@@ -52,7 +52,7 @@ const Login = () => {
               placeholder="Password"
               type="password"
             />
-            {errors && <p className="error"> Invalid credentials </p>}
+            {errors && <div className="error"> Invalid credentials </div>}
             <button className="loginButton">Login</button>
           </form>
           <p>
