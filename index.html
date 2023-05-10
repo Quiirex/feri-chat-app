@@ -4,15 +4,25 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="script-src 'self' 'unsafe-inline';"
-    />
+    <link rel="stylesheet" href="./electron/style/style.css" />
+    <script src="https://kit.fontawesome.com/1c9144b004.js" crossorigin="anonymous"></script>
     <title>FERI Chat 0.1.0</title>
   </head>
 
   <body>
+    <div id="menu-bar">
+     <div class="left" role="menu">
+       <button class="menubar-btn" id="menu-btn"><i class="fas fa-bars"></i></button>
+       <h5>Feri Chat App</h5>
+     </div>
+     <div class="right">
+       <button class="menubar-btn" id="minimize-btn"><i class="fas fa-window-minimize"></i></button>
+       <button class="menubar-btn" id="max-unmax-btn"><i class="far fa-square"></i></button>
+       <button class="menubar-btn" id="close-btn"><i class="fas fa-times"></i></button>
+     </div>
+   </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script src="./electron/renderer.js"></script>
   </body>
 </html>
