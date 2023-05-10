@@ -1,4 +1,4 @@
-[![Merge dev into master](https://github.com/Quiirex/feri-chat-app/actions/workflows/mergeToProd.yml/badge.svg?branch=master)](https://github.com/Quiirex/feri-chat-app/actions/workflows/mergeToProd.yml)
+[![Production workflow](https://github.com/Quiirex/feri-chat-app/actions/workflows/mergeToProd.yml/badge.svg?branch=master)](https://github.com/Quiirex/feri-chat-app/actions/workflows/mergeToProd.yml)
 
 # FERI Chat App (Electron + React + Vite)
 
