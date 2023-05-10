@@ -59,7 +59,7 @@ async function createWindow() {
     width: 1024,
     height: 700,
     useContentSize: true,
-    frame: isWindows ? false : true,
+    frame: false,
   });
 
   if (process.env.VITE_DEV_SERVER_URL) {
