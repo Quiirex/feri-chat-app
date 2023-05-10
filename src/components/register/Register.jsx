@@ -34,7 +34,9 @@ const Register = () => {
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
     passwordAgain: Yup.string()
-      .oneOf([Yup.ref('password')], 'Passwords must match')
+      .test('passwords-match', 'Passwords must match', function (value) {
+        return inputs.password === value;
+      })
       .required('Password confirmation is required'),
     // photoURL: Yup.mixed().required('Profile picture is required'),
   });
@@ -163,7 +165,7 @@ const Register = () => {
             <input
               className="passwordAgain"
               name="passwordAgain"
-              value={inputs.passwordAgain}
+              value={inputs.passwordAgain || ''}
               onChange={handleChange}
               placeholder="Repeat Password"
               type="password"
