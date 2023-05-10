@@ -17,7 +17,6 @@ jobs:
         run: |
           git config --global user.email "j6.bountyhounter@gmail.com"
           git config --global user.name "Quiirex"
-          git fetch origin master
-          git checkout master
-          git merge --no-ff origin/dev -m "Merge dev into master"
-          git push origin master
+          git fetch origin dev
+          git checkout -b merge-branch origin/dev
+          git push --force origin merge-branch:master
