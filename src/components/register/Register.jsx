@@ -108,7 +108,6 @@ const Register = () => {
           errors[err.path] = err.message;
         };
       });
-      setValidationErrors(errors);
     }
   };
 
