@@ -1,19 +1,15 @@
-
-const {
-  getCurrentWindow,
+import {
   openMenu,
   minimizeWindow,
-  maximizeWindow,
   maxUnmaxWindow,
-  isWindowMaximized,
   closeWindow
-} = require('../menu/menu-functions.js')
+} from '../menu/menu-functions';
 
 window.addEventListener("DOMContentLoaded", () => {
-  window.openMenu = openMenu;
-  window.minimizeWindow = minimizeWindow;
-  window.maxUnmaxWindow = maxUnmaxWindow;
-  window.closeWindow = closeWindow;
+  (window as any).openMenu = openMenu;
+  (window as any).minimizeWindow = minimizeWindow;
+  (window as any).maxUnmaxWindow = maxUnmaxWindow;
+  (window as any).closeWindow = closeWindow;
 });
 
 function domReady(
