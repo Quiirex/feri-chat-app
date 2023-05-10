@@ -1,4 +1,4 @@
-name: Merge dev into master
+name: Production Workflow
 
 on:
   push:
