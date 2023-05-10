@@ -9,6 +9,7 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
+import * as Yup from 'yup';
 import './Register.scss';
 
 const Register = () => {
@@ -23,16 +24,44 @@ const Register = () => {
     photoURL: '',
   });
 
-  const handleChange = (e) => {
+  const validationSchema = Yup.object().shape({
+    firstname: Yup.string().required('First name is required'),
+    lastname: Yup.string().required('Last name is required'),
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+    password: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('Password is required'),
+    passwordAgain: Yup.string()
+      .test('passwords-match', 'Passwords must match', function (value) {
+        return inputs.password === value;
+      })
+      .required('Password confirmation is required'),
+    // photoURL: Yup.mixed().required('Profile picture is required'),
+  });
+
+  const [validationErrors, setValidationErrors] = useState({});
+
+  const handleChange = async (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setInputs({ ...inputs, [name]: value });
+
+    try {
+      await validationSchema.validateAt(name, { [name]: value });
+      setValidationErrors({ ...validationErrors, [name]: '' });
+    } catch (error) {
+      setValidationErrors({ ...validationErrors, [name]: error.message });
+    }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
     try {
+      await validationSchema.validate(inputs, { abortEarly: false });
+
       const registrationResult = await createUserWithEmailAndPassword(
         auth,
         inputs.email,
@@ -73,7 +102,11 @@ const Register = () => {
       //   });
       // });
     } catch (error) {
-      alert(error.message, error.stack);
+      const errors = {};
+      error.inner.forEach((err) => {
+        errors[err.path] = err.message;
+      });
+      setValidationErrors(errors);
     }
   };
 
@@ -91,6 +124,9 @@ const Register = () => {
               placeholder="First name"
               type="text"
             />
+            {validationErrors.firstname && (
+              <div className="error">{validationErrors.firstname}</div>
+            )}
             <input
               className="lastname"
               name="lastname"
@@ -99,6 +135,9 @@ const Register = () => {
               placeholder="Last name"
               type="text"
             />
+            {validationErrors.lastname && (
+              <div className="error">{validationErrors.lastname}</div>
+            )}
             <input
               className="email"
               name="email"
@@ -107,6 +146,9 @@ const Register = () => {
               placeholder="Email"
               type="email"
             />
+            {validationErrors.email && (
+              <div className="error">{validationErrors.email}</div>
+            )}
             <input
               className="password"
               name="password"
@@ -115,14 +157,20 @@ const Register = () => {
               placeholder="Password"
               type="password"
             />
+            {validationErrors.password && (
+              <div className="error">{validationErrors.password}</div>
+            )}
             <input
               className="passwordAgain"
               name="passwordAgain"
-              value={inputs.passwordAgain}
+              value={inputs.passwordAgain || ''}
               onChange={handleChange}
               placeholder="Repeat Password"
               type="password"
             />
+            {validationErrors.passwordAgain && (
+              <div className="error">{validationErrors.passwordAgain}</div>
+            )}
             <input
               // required
               className="file-input"
