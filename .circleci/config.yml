@@ -1,0 +1,38 @@
+version: 2.1
+workflows:
+  version: 2
+  build-and-merge:
+    jobs:
+      - build
+      - merge:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - dev
+
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.9
+    steps:
+      - checkout
+
+  merge:
+    docker:
+      - image: circleci/python:3.9
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
+          docker_layer_caching: true
+      - run:
+          name: Merge dev into master
+          command: |
+            git config --global user.email "j6.bountyhounter@gmail.com"
+            git config --global user.name "Quiirex"
+            git fetch --all
+            git checkout master
+            git merge --ff-only origin/dev
+            git push origin master
