@@ -1,6 +1,7 @@
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { release } from 'node:os';
 import { join } from 'node:path';
+import { menu } from '../menu/menu.js';
 
 // The built directory structure
 //
@@ -40,6 +41,8 @@ const preload = join(__dirname, '../preload/index.js');
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
+const isWindows = process.platform === "win32";
+
 async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
@@ -56,6 +59,7 @@ async function createWindow() {
     width: 1024,
     height: 700,
     useContentSize: true,
+    frame: isWindows ? false : true,
   });
 
   if (process.env.VITE_DEV_SERVER_URL) {
@@ -76,6 +80,35 @@ async function createWindow() {
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) shell.openExternal(url);
     return { action: 'deny' };
+  });
+
+  ipcMain.on(`display-app-menu`, function(e, args) {
+    if (isWindows && win) {
+      menu.popup({
+        window: win,
+        x: args.x,
+        y: args.y
+      });
+    }
+  });
+
+  ipcMain.on('close-app-window', () => {
+    BrowserWindow.getFocusedWindow()?.close();
+  });
+
+  ipcMain.on(`minimize-app-window`, () => {
+    if (BrowserWindow.getFocusedWindow()?.isMinimizable) {
+      BrowserWindow.getFocusedWindow()?.minimize();
+    }
+  });
+
+  ipcMain.on(`max-unmax-app-window`, () => {
+    if (BrowserWindow.getFocusedWindow()?.isMaximized()) {
+      BrowserWindow.getFocusedWindow()?.unmaximize();
+    }
+    else {
+      BrowserWindow.getFocusedWindow()?.maximize();
+    }
   });
 }
 
