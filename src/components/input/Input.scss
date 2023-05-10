@@ -13,7 +13,7 @@
     border: none;
     outline: none;
     color: black;
-    font-size: 18px;
+    font-size: 16px;
     background-color: transparent;
 
     &::placeholder {
@@ -37,7 +37,11 @@
       color: white;
       background-color: #006385;
       cursor: pointer;
-      border-radius: 5px;
+      border-radius: 30px;
+    }
+
+    svg {
+      transform: rotate(224deg);
     }
 
     button:hover {

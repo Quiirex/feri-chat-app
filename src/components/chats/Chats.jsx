@@ -1,45 +1,56 @@
+import { doc, onSnapshot } from 'firebase/firestore';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import { ChatContext } from '../../context/ChatContext';
+import { db } from '../../services/firebase';
 import './Chats.scss';
 
 const Chats = () => {
+  const [chats, setChats] = useState([]);
+
+  const { currentUser } = useContext(AuthContext);
+  const { dispatch } = useContext(ChatContext);
+
+  useEffect(() => {
+    const getChats = () => {
+      const unsub = onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
+        setChats(doc.data());
+      });
+
+      return () => {
+        unsub();
+      };
+    };
+
+    currentUser.uid && getChats();
+  }, [currentUser.uid]);
+
+  const handleSelect = (u) => {
+    dispatch({ type: 'CHANGE_USER', payload: u });
+  };
+
   return (
-    <>
-      <div className="chats">
-        <div className="userChat">
-          <img
-            src="https://media.licdn.com/dms/image/C4D03AQGIScwFoM74YQ/profile-displayphoto-shrink_800_800/0/1523881590135?e=2147483647&v=beta&t=JC8yYa1iTGen_uPSkIh-T7mNAZISmGr8il3hqe_wln8"
-            alt="receiver avatar"
-          />
-          <div className="userChatInfo">
-            <span>Janez Novak</span>
-            <p>You: Okej, kul!</p>
+    <div className="chats">
+      {Object.entries(chats)
+        ?.sort((a, b) => b[1].date - a[1].date)
+        .map((chat) => (
+          <div
+            className="userChat"
+            key={chat[0]}
+            onClick={() => handleSelect(chat[1].userInfo)}
+          >
+            <img src={chat[1].userInfo.photoURL} alt="" />
+            <div className="userChatInfo">
+              <span>{chat[1].userInfo.displayName}</span>
+              <p>
+                {chat[1].lastMessage?.text.length > 25
+                  ? chat[1].lastMessage?.text.slice(0, 25) + '...'
+                  : chat[1].lastMessage?.text}
+              </p>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="chats">
-        <div className="userChat">
-          <img
-            src="https://bumnovice.si/wp-content/uploads/2021/06/sasa-lendero-miha-hercog2-808x600.jpg"
-            alt="receiver avatar"
-          />
-          <div className="userChatInfo">
-            <span>Miha Slovenec</span>
-            <p>Kak je blo včeraj?</p>
-          </div>
-        </div>
-      </div>
-      <div className="chats">
-        <div className="userChat">
-          <img
-            src="data:image/jpeg;base64,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"
-            alt="receiver avatar"
-          />
-          <div className="userChatInfo">
-            <span>Ana Primerkova</span>
-            <p>Maš kaj za kolokvij?</p>
-          </div>
-        </div>
-      </div>
-    </>
+        ))}
+    </div>
   );
 };
 
