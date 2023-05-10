@@ -83,11 +83,11 @@ async function createWindow() {
   });
 
   ipcMain.on(`display-app-menu`, function(e, args) {
-      menu.popup({
-        window: win,
-        x: args.x,
-        y: args.y
-      });
+    menu.popup({
+      window: win,
+      x: args.x,
+      y: args.y
+    });
   });
 
   ipcMain.on('close-app-window', () => {
