@@ -1,3 +1,21 @@
+
+const {
+  getCurrentWindow,
+  openMenu,
+  minimizeWindow,
+  maximizeWindow,
+  maxUnmaxWindow,
+  isWindowMaximized,
+  closeWindow
+} = require('../menu/menu-functions.js')
+
+window.addEventListener("DOMContentLoaded", () => {
+  window.openMenu = openMenu;
+  window.minimizeWindow = minimizeWindow;
+  window.maxUnmaxWindow = maxUnmaxWindow;
+  window.closeWindow = closeWindow;
+});
+
 function domReady(
   condition: DocumentReadyState[] = ['complete', 'interactive']
 ) {
