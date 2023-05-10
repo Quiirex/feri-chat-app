@@ -42,7 +42,6 @@ const Register = () => {
   });
 
   const [validationErrors, setValidationErrors] = useState({});
-  const [submitError, setSubmitError] = useState(false);
 
   const handleChange = async (e) => {
     const name = e.target.name;
@@ -105,11 +104,9 @@ const Register = () => {
     } catch (error) {
       const errors = {};
       error.inner.forEach((err) => {
-        (e) => {
-          errors[err.path] = err.message;
-        };
+        errors[err.path] = err.message;
       });
-      setSubmitError(true);
+      setValidationErrors(errors);
     }
   };
 
@@ -183,9 +180,6 @@ const Register = () => {
               type="file"
               id="file"
             />
-            {submitError && (
-              <div className="error"> Invalid form submition </div>
-            )}
             <button className="registerButton">Register</button>
           </form>
           <p>
