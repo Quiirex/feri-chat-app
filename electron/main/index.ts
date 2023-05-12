@@ -52,13 +52,10 @@ async function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    minWidth: 768,
-    minHeight: 520,
-    maxWidth: 1024,
-    maxHeight: 800,
     width: 1024,
     height: 700,
     useContentSize: true,
+    fullscreenable: true,
     frame: false,
   });
 
