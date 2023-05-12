@@ -1,15 +1,18 @@
 import './Home.scss';
 import Sidebar from '../sidebar/Sidebar';
 import Chat from '../chat/Chat';
+import { Layout } from '../layout/Layout';
 
 const Home = () => {
   return (
-    <div className="home">
-      <div className="container">
-        <Sidebar />
-        <Chat />
+    <Layout>
+      <div className="home">
+        <div className="container">
+          <Sidebar />
+          <Chat />
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
