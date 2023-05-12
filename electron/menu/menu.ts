@@ -1,11 +1,9 @@
 import { Menu, MenuItemConstructorOptions } from "electron";
 
-const isMac = process.platform === "darwin";
-
 const template: MenuItemConstructorOptions[] = [
   {
     label: "File",
-    submenu: [isMac ? { role: "close" } : { role: "quit" }],
+    submenu: [{ role: "quit" }],
   },
   {
     label: "Edit",
