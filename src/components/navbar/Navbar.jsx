@@ -9,10 +9,11 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <span className="logo">FERI Chat</span>
-      <div className="user">
-        <img src={currentUser.photoURL} alt="avatar" />
-        <span>{currentUser.displayName}</span>
+    <div className="user">
+      <img src={currentUser.photoURL} alt="avatar" />
+      <span>{currentUser.displayName}</span>
+    </div>
+    <div className="user">
         <button onClick={() => signOut(auth)} title="Log out">
           <svg
             xmlns="http://www.w3.org/2000/svg"
