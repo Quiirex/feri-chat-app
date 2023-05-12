@@ -9,6 +9,7 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
+import { Layout } from '../layout/Layout';
 import './Register.scss';
 
 const Register = () => {
@@ -78,71 +79,73 @@ const Register = () => {
   };
 
   return (
-    <div className="register">
-      <div className="formContainer">
-        <div className="formWrapper">
-          <span className="logo"> FERI Chat </span>
-          <form onSubmit={handleRegister}>
-            <input
-              className="firstname"
-              name="firstname"
-              value={inputs.firstname}
-              onChange={handleChange}
-              placeholder="First name"
-              type="text"
-            />
-            <input
-              className="lastname"
-              name="lastname"
-              value={inputs.lastname}
-              onChange={handleChange}
-              placeholder="Last name"
-              type="text"
-            />
-            <input
-              className="email"
-              name="email"
-              value={inputs.email}
-              onChange={handleChange}
-              placeholder="Email"
-              type="email"
-            />
-            <input
-              className="password"
-              name="password"
-              value={inputs.password}
-              onChange={handleChange}
-              placeholder="Password"
-              type="password"
-            />
-            <input
-              className="passwordAgain"
-              name="passwordAgain"
-              value={inputs.passwordAgain}
-              onChange={handleChange}
-              placeholder="Repeat Password"
-              type="password"
-            />
-            <input
-              // required
-              className="file-input"
-              name="photoURL"
-              value={inputs.photoURL}
-              onChange={handleChange}
-              type="file"
-              id="file"
-            />
-            <button className="registerButton">Register</button>
-          </form>
-          <p>
-            Already have an account?{' '}
-            <Link className="link" to="/login">
-              Login
-            </Link>
-          </p>
+    <Layout>
+      <div className="register">
+        <div className="formContainer">
+          <div className="formWrapper">
+            <span className="logo"> FERI Chat </span>
+            <form onSubmit={handleRegister}>
+              <input
+                className="firstname"
+                name="firstname"
+                value={inputs.firstname}
+                onChange={handleChange}
+                placeholder="First name"
+                type="text"
+              />
+              <input
+                className="lastname"
+                name="lastname"
+                value={inputs.lastname}
+                onChange={handleChange}
+                placeholder="Last name"
+                type="text"
+              />
+              <input
+                className="email"
+                name="email"
+                value={inputs.email}
+                onChange={handleChange}
+                placeholder="Email"
+                type="email"
+              />
+              <input
+                className="password"
+                name="password"
+                value={inputs.password}
+                onChange={handleChange}
+                placeholder="Password"
+                type="password"
+              />
+              <input
+                className="passwordAgain"
+                name="passwordAgain"
+                value={inputs.passwordAgain}
+                onChange={handleChange}
+                placeholder="Repeat Password"
+                type="password"
+              />
+              <input
+                // required
+                className="file-input"
+                name="photoURL"
+                value={inputs.photoURL}
+                onChange={handleChange}
+                type="file"
+                id="file"
+              />
+              <button className="registerButton">Register</button>
+            </form>
+            <p>
+              Already have an account?{' '}
+              <Link className="link" to="/login">
+                Login
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
