@@ -52,6 +52,8 @@ async function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
     },
+    minWidth: 768,
+    minHeight: 520,
     width: 1024,
     height: 700,
     useContentSize: true,
