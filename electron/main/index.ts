@@ -97,8 +97,8 @@ async function createWindow() {
     }
   });
 
-  ipcMain.on(`max-unmax-app-window`, () => {
-    if (BrowserWindow.getFocusedWindow()?.isMaximized()) {
+  ipcMain.on(`send-maximize-window-status`, (e, args) => {
+    if (args.isMaximized) {
       BrowserWindow.getFocusedWindow()?.unmaximize();
     }
     else {
