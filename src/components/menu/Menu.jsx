@@ -71,7 +71,7 @@ const Menu = () => {
         <button ref={menuButtonRef} className="menubar-btn" id="menu-btn">
           <i className="fas fa-bars"></i>
         </button>
-        <h5>Feri Chat App</h5>
+        <h5>FERI Chat</h5>
       </div>
       <div className="right">
         <button
