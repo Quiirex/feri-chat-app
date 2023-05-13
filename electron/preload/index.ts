@@ -1,3 +1,19 @@
+import {
+  openMenu,
+  minimizeWindow,
+  maxUnmaxWindow,
+  closeWindow,
+  sendMaximizeWindowStatus,
+} from '../menu/menu-functions';
+
+window.addEventListener('DOMContentLoaded', () => {
+  (window as any).openMenu = openMenu;
+  (window as any).minimizeWindow = minimizeWindow;
+  (window as any).maxUnmaxWindow = maxUnmaxWindow;
+  (window as any).closeWindow = closeWindow;
+  (window as any).sendMaximizeWindowStatus = sendMaximizeWindowStatus;
+});
+
 function domReady(
   condition: DocumentReadyState[] = ['complete', 'interactive']
 ) {
