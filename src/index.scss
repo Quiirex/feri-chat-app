@@ -11,3 +11,12 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+.error {
+  color: #ff0000;
+  font-size: small;
+  font-weight: bold;
+  position: relative;
+  margin-top: -10px;
+  margin-bottom: -10px;
+}

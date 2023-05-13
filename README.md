@@ -1,3 +1,5 @@
+[![Production Workflow](https://github.com/Quiirex/feri-chat-app/actions/workflows/prod.yml/badge.svg)](https://github.com/Quiirex/feri-chat-app/actions/workflows/prod.yml)
+
 # FERI Chat App (Electron + React + Vite)
 
 ## Uporabljene tehnologije

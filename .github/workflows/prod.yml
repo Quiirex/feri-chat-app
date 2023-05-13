@@ -1,29 +1,22 @@
-name: Merge dev into master
+name: Production Workflow
 
 on:
-  pull_request:
+  push:
     branches:
       - dev
-    types:
-      - closed
 
 jobs:
   merge:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          ref: master
-      - name: Merge changes
-        uses: octokit/request-action@v2.x
-        with:
-          route: PUT /repos/${{ github.repository }}/merges
-          mediaType: '{"previews":["shadow-cat"]}'
-          requestBody: |
-            {
-              "base": "master",
-              "head": "dev",
-              "commit_message": "Merge dev into master"
-            }
-          token: ${{ secrets.TOKEN }}
+
+      - name: Merge dev into master
+        run: |
+          git config --global user.email "j6.bountyhounter@gmail.com"
+          git config --global user.name "Quiirex"
+          git fetch origin dev
+          git checkout -b merge-branch origin/dev
+          git push --force origin merge-branch:master

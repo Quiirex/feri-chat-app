@@ -10,6 +10,7 @@ import {
 } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
 import { Layout } from '../layout/Layout';
+import * as Yup from 'yup';
 import './Register.scss';
 
 const Register = () => {
@@ -24,16 +25,44 @@ const Register = () => {
     photoURL: '',
   });
 
-  const handleChange = (e) => {
+  const validationSchema = Yup.object().shape({
+    firstname: Yup.string().required('First name is required'),
+    lastname: Yup.string().required('Last name is required'),
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+    password: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('Password is required'),
+    passwordAgain: Yup.string()
+      .test('passwords-match', 'Passwords must match', function (value) {
+        return inputs.password === value;
+      })
+      .required('Password confirmation is required'),
+    // photoURL: Yup.mixed().required('Profile picture is required'),
+  });
+
+  const [validationErrors, setValidationErrors] = useState({});
+
+  const handleChange = async (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setInputs({ ...inputs, [name]: value });
+
+    try {
+      await validationSchema.validateAt(name, { [name]: value });
+      setValidationErrors({ ...validationErrors, [name]: '' });
+    } catch (error) {
+      setValidationErrors({ ...validationErrors, [name]: error.message });
+    }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
     try {
+      await validationSchema.validate(inputs, { abortEarly: false });
+
       const registrationResult = await createUserWithEmailAndPassword(
         auth,
         inputs.email,
@@ -74,7 +103,11 @@ const Register = () => {
       //   });
       // });
     } catch (error) {
-      alert(error.message, error.stack);
+      const errors = {};
+      error.inner.forEach((err) => {
+        errors[err.path] = err.message;
+      });
+      setValidationErrors(errors);
     }
   };
 
