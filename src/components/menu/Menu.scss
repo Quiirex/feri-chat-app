@@ -1,42 +1,42 @@
 #menu-bar {
-    padding: 0;
-    margin: 0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 30px;
-    background: #34475a;
-    -webkit-app-region: drag;
-  }
-  
-  #menu-bar > div {
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .menubar-btn {
-    -webkit-app-region: no-drag;
-    margin: 0 0px;
-    padding: 0 10px;
-    height: 100%;
-    padding: 0 15px;
-    border: none;
-    background: transparent;
-    outline: none;
-  }
-  
-  .menubar-btn:hover {
-    background: rgba(221, 221, 221, 0.2);
-  }
-  
-  #close-btn:hover {
-    background: rgb(255, 0, 0);
-  }
-  
-  .menubar-btn > i {
-    color: white;
-  }
+  padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  background: #34475a;
+  -webkit-app-region: drag;
+}
+
+#menu-bar > div {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menubar-btn {
+  -webkit-app-region: no-drag;
+  margin: 0 0px;
+  padding: 0 10px;
+  height: 100%;
+  padding: 0 15px;
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+.menubar-btn:hover {
+  background: rgba(221, 221, 221, 0.2);
+}
+
+#close-btn:hover {
+  background: rgb(255, 0, 0);
+}
+
+.menubar-btn > i {
+  color: white;
+}

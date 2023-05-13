@@ -6,7 +6,7 @@ import {
   sendMaximizeWindowStatus,
 } from '../menu/menu-functions';
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener('DOMContentLoaded', () => {
   (window as any).openMenu = openMenu;
   (window as any).minimizeWindow = minimizeWindow;
   (window as any).maxUnmaxWindow = maxUnmaxWindow;

@@ -41,7 +41,7 @@ const preload = join(__dirname, '../preload/index.js');
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
-const isWindows = process.platform === "win32";
+const isWindows = process.platform === 'win32';
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -81,11 +81,11 @@ async function createWindow() {
     return { action: 'deny' };
   });
 
-  ipcMain.on(`display-app-menu`, function(e, args) {
+  ipcMain.on(`display-app-menu`, function (e, args) {
     menu.popup({
       window: win,
       x: args.x,
-      y: args.y
+      y: args.y,
     });
   });
 
@@ -102,8 +102,7 @@ async function createWindow() {
   ipcMain.on(`send-maximize-window-status`, (e, args) => {
     if (args.isMaximized) {
       BrowserWindow.getFocusedWindow()?.unmaximize();
-    }
-    else {
+    } else {
       BrowserWindow.getFocusedWindow()?.maximize();
     }
   });

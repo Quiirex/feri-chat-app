@@ -25,5 +25,5 @@ export {
   minimizeWindow,
   maxUnmaxWindow,
   closeWindow,
-  sendMaximizeWindowStatus
+  sendMaximizeWindowStatus,
 };
