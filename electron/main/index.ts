@@ -1,7 +1,7 @@
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { release } from 'node:os';
 import { join } from 'node:path';
-import { menu } from '../menu/menu.js';
+import { menu } from '../menu/menu';
 
 // The built directory structure
 //
