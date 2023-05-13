@@ -29,11 +29,6 @@
     "e2e": "playwright test",
     "format": "npx prettier --write ."
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
   "devDependencies": {
     "@playwright/test": "^1.31.0",
     "@types/react": "^18.0.28",
