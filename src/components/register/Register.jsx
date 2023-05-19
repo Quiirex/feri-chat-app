@@ -78,7 +78,7 @@ const Register = () => {
       );
 
       await uploadBytesResumable(storageRef, file).then(() => {
-        console.log('File uploaded!');
+        
       })
       .catch((error) => {
         console.log(error);
