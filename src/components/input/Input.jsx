@@ -21,7 +21,7 @@ const Input = () => {
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
 
-  const handleSend = async () => {
+  const handleSend = async (urgentFlag) => {
     if (!text) {
       return;
     }
@@ -59,6 +59,7 @@ const Input = () => {
           text,
           senderId: currentUser.uid,
           date: Timestamp.now(),
+          urgent: urgentFlag,
         }),
       });
     }
@@ -79,8 +80,23 @@ const Input = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && text) {
-      handleSend();
+    if (e.key === 'Enter' && e.shiftKey && text) {         
+      const confirmation = window.confirm('Do you want to send urgent message?')
+      if(confirmation) {
+        handleSend(true);
+      }
+    }
+    else if (e.key === 'Enter' && text) {
+      handleSend(false);
+    }
+    else {}
+  };
+
+  const handleRightClick = (e) => {
+    e.preventDefault();
+    const confirmation = window.confirm('Do you want to send urgent message?')
+    if(confirmation) {
+      handleSend(true);
     }
   };
 
@@ -104,7 +120,7 @@ const Input = () => {
         <label htmlFor="file">
           <img src={Img} alt="" />
         </label> */}
-        <button onClick={handleSend}>
+        <button onClick={() => handleSend(false)} onContextMenu={handleRightClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
