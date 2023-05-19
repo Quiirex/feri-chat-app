@@ -81,7 +81,7 @@ const Input = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && e.shiftKey && text) {         
-      const confirmation = window.confirm('Do you want to send urgent message?', "Yes", "No")
+      const confirmation = window.confirm('Do you want to send urgent message?')
       if(confirmation) {
         handleSend(true);
       }
@@ -94,7 +94,7 @@ const Input = () => {
 
   const handleRightClick = (e) => {
     e.preventDefault();
-    const confirmation = window.confirm('Do you want to send urgent message?', "Yes", "No")
+    const confirmation = window.confirm('Do you want to send urgent message?')
     if(confirmation) {
       handleSend(true);
     }
