@@ -50,9 +50,9 @@ const Message = ({ message }) => {
         <p>{message.text}</p>
         {message.img && <img src={message.img} alt="" />}
         {isHovered && (
-          <p id="tooltip" style={{ top: position.y, left: position.x }}>
+          <div id="tooltip" style={{ top: position.y, left: position.x }}>
             This is a message
-          </p>
+          </div>
         )}
       </div>
     </div>
