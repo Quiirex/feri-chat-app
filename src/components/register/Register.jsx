@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth, db, storage } from '@/services/firebase';
+import { auth, db, storage, } from '@/services/firebase';
+
 import {
   getDownloadURL,
   ref,
@@ -69,19 +70,24 @@ const Register = () => {
         inputs.password
       );
 
-      // const storageRef = ref(
-      //   storage,
-      //   `photoURLs/${registrationResult.user.uid}/${new Date().getTime()}`
-      // );
+      const file = e.target[5].files[0];
+      
+      const storageRef = ref(
+        storage,
+        `photoURLs/${registrationResult.user.uid}/${new Date().getTime()}`
+      );
 
-      // const file = e.target[5].files[0];
+      await uploadBytesResumable(storageRef, file).then(() => {
+        console.log('File uploaded!');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-      // await uploadBytesResumable(storageRef, file).then(() => {
-      //   getDownloadURL(storageRef).then(async (url) => {
       try {
         await updateProfile(registrationResult.user, {
           displayName: inputs.firstname + ' ' + inputs.lastname,
-          photoURL: 'https://static.thenounproject.com/png/363640-200.png',
+          photoURL: inputs.photoURL,
         });
 
         await setDoc(doc(db, 'users', registrationResult.user.uid), {
@@ -90,20 +96,20 @@ const Register = () => {
           firstname: inputs.firstname,
           lastname: inputs.lastname,
           email: inputs.email,
-          photoURL: 'https://static.thenounproject.com/png/363640-200.png',
+          photoURL: inputs.photoURL,
           role: 'Student',
         });
 
         await setDoc(doc(db, 'userChats', registrationResult.user.uid), {});
-
         navigate('/login');
-      } catch (error) {
+      }
+      catch (error) {
         alert(error.message, error.stack);
       }
-      //   });
-      // });
-    } catch (error) {
+    }
+    catch (error) {
       const errors = {};
+      console.log(error)
       error.inner.forEach((err) => {
         errors[err.path] = err.message;
       });
@@ -162,7 +168,6 @@ const Register = () => {
                 // required
                 className="file-input"
                 name="photoURL"
-                value={inputs.photoURL}
                 onChange={handleChange}
                 type="file"
                 id="file"
