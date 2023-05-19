@@ -84,6 +84,9 @@ const Register = () => {
         console.log(error);
       });
 
+      const photoURL = await getDownloadURL(storageRef);
+      inputs.photoURL = photoURL;
+
       try {
         await updateProfile(registrationResult.user, {
           displayName: inputs.firstname + ' ' + inputs.lastname,
@@ -168,6 +171,7 @@ const Register = () => {
                 // required
                 className="file-input"
                 name="photoURL"
+                value={inputs.photoURL}
                 onChange={handleChange}
                 type="file"
                 id="file"
