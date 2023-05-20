@@ -7,7 +7,6 @@ import './Chats.scss';
 
 const Chats = () => {
   const [chats, setChats] = useState([]);
-  const [messages, setMessages] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
   const { dispatch } = useContext(ChatContext);
@@ -24,28 +23,10 @@ const Chats = () => {
     };
 
     currentUser.uid && getChats();
-    // console.log('currentUser', currentUser.uid);
-    console.log('chats', typeof chats);
-    console.log('all chats', Object.keys(chats));
-    const chatIds = Object.keys(chats);
-    for (let i = 0; i < chatIds.length; i++) {
-      getMessages(chatIds[i]);
-    }
-    console.log('Messages', messages);
   }, [currentUser.uid]);
 
   const handleSelect = (u) => {
     dispatch({ type: 'CHANGE_USER', payload: u });
-  };
-
-  const getMessages = (chatId) => {
-    const unsub = onSnapshot(doc(db, 'chats', chatId), (doc) => {
-      doc.exists() && setMessages(doc.data().messages);
-    });
-
-    return () => {
-      unsub();
-    };
   };
 
   return (
@@ -62,8 +43,7 @@ const Chats = () => {
             <div className="userChatInfo">
               <span>{chat[1].userInfo.displayName}</span>
               <p>
-                {messages[messages.length - 1].senderId === currentUser.uid &&
-                  'You: '}
+                {chat[1].lastMessage?.senderId === currentUser.uid && 'You: '}
                 {chat[1].lastMessage?.text.length > 25
                   ? chat[1].lastMessage?.text.slice(0, 25) + '...'
                   : chat[1].lastMessage?.text}
