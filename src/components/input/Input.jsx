@@ -120,6 +120,7 @@ const Input = () => {
         <label htmlFor="file">
           <img src={Img} alt="" />
         </label> */}
+        <button>emoji</button>
         <button onClick={() => handleSend(false)} onContextMenu={handleRightClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
