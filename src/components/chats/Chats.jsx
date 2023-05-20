@@ -23,6 +23,7 @@ const Chats = () => {
     };
 
     currentUser.uid && getChats();
+    console.log('currentUser', currentUser.uid);
   }, [currentUser.uid]);
 
   const handleSelect = (u) => {
@@ -43,6 +44,7 @@ const Chats = () => {
             <div className="userChatInfo">
               <span>{chat[1].userInfo.displayName}</span>
               <p>
+                {chat[1].userInfo?.uid !== currentUser.uid && 'You: '}
                 {chat[1].lastMessage?.text.length > 25
                   ? chat[1].lastMessage?.text.slice(0, 25) + '...'
                   : chat[1].lastMessage?.text}
