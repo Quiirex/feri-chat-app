@@ -12,11 +12,13 @@ import { db, storage } from '../../services/firebase';
 import { v4 as uuid } from 'uuid';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 // import Img from '../../assets/img.png';
+import EmojiPicker from 'emoji-picker-react';
 import './Input.scss';
 
 const Input = () => {
   const [text, setText] = useState('');
   const [img, setImg] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
@@ -120,7 +122,21 @@ const Input = () => {
         <label htmlFor="file">
           <img src={Img} alt="" />
         </label> */}
-        <button>emoji</button>
+        <div className='emoji-picker'>
+          {showEmojiPicker && (
+            <EmojiPicker
+            height={400}
+            searchDisabled
+            skinTonesDisabled
+            previewConfig={{ showPreview:false }}
+            onEmojiClick={(selectedEmoji, e) => {
+              const emoji = String.fromCodePoint(parseInt(selectedEmoji.unified, 16));
+              setText(text + emoji);
+            }}
+            />
+          )}
+        </div>
+        <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>emoji</button>
         <button onClick={() => handleSend(false)} onContextMenu={handleRightClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
