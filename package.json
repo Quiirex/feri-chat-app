@@ -56,8 +56,6 @@
     "node": "^14.18.0 || >=16.0.0"
   },
   "dependencies": {
-    "clsx": "^1.2.1",
-    "emoji-picker-react": "^4.4.9",
     "firebase": "^9.9.4",
     "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^6.11.1",

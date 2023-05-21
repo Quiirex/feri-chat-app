@@ -7,8 +7,7 @@
   justify-content: space-between;
   border-left: 1px solid black;
   border-top: 1px solid black;
-  position: relative;
-  
+
   input {
     width: 100%;
     border: none;
@@ -49,10 +48,4 @@
       background-color: #004d5c;
     }
   }
-}
-
-.emoji-picker{
-  position: absolute;
-  bottom: 50px;
-  right: 65px;
 }
