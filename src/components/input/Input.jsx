@@ -67,6 +67,7 @@ const Input = () => {
     await updateDoc(doc(db, 'userChats', currentUser.uid), {
       [data.chatId + '.lastMessage']: {
         text,
+        senderId: currentUser.uid,
       },
       [data.chatId + '.date']: serverTimestamp(),
     });
@@ -80,22 +81,23 @@ const Input = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && e.shiftKey && text) {         
-      const confirmation = window.confirm('Do you want to send urgent message?')
-      if(confirmation) {
+    if (e.key === 'Enter' && e.shiftKey && text) {
+      const confirmation = window.confirm(
+        'Do you want to send urgent message?'
+      );
+      if (confirmation) {
         handleSend(true);
       }
-    }
-    else if (e.key === 'Enter' && text) {
+    } else if (e.key === 'Enter' && text) {
       handleSend(false);
+    } else {
     }
-    else {}
   };
 
   const handleRightClick = (e) => {
     e.preventDefault();
-    const confirmation = window.confirm('Do you want to send urgent message?')
-    if(confirmation) {
+    const confirmation = window.confirm('Do you want to send urgent message?');
+    if (confirmation) {
       handleSend(true);
     }
   };
@@ -120,7 +122,10 @@ const Input = () => {
         <label htmlFor="file">
           <img src={Img} alt="" />
         </label> */}
-        <button onClick={() => handleSend(false)} onContextMenu={handleRightClick}>
+        <button
+          onClick={() => handleSend(false)}
+          onContextMenu={handleRightClick}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
