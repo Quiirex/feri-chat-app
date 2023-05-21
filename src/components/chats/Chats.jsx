@@ -35,14 +35,14 @@ const Chats = () => {
         ?.sort((a, b) => b[1].date - a[1].date)
         .map((chat, index) => (
           <div
-            className="userChat"
+            className={`userChat ${!chat[1].lastMessage?.seen ? 'unseen' : ''}`}
             key={chat[0]}
             onClick={() => handleSelect(chat[1].userInfo)}
           >
             <img src={chat[1].userInfo.photoURL} alt="" />
             <div className="userChatInfo">
               <span>{chat[1].userInfo.displayName}</span>
-              <p className={chat[1].lastMessage.urgent && 'urgent'}>
+              <p className={chat[1].lastMessage?.urgent ? 'urgent' : ''}>
                 {chat[1].lastMessage?.senderId === currentUser.uid && 'You: '}
                 {chat[1].lastMessage?.text.length > 25
                   ? chat[1].lastMessage?.text.slice(0, 25) + '...'
