@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { ChatContext } from '@/context/ChatContext';
 import {
@@ -12,11 +12,14 @@ import { db, storage } from '../../services/firebase';
 import { v4 as uuid } from 'uuid';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 // import Img from '../../assets/img.png';
+import EmojiPicker from 'emoji-picker-react';
 import './Input.scss';
 
 const Input = () => {
   const [text, setText] = useState('');
   const [img, setImg] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const inputRef = useRef(null);
 
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
@@ -25,6 +28,8 @@ const Input = () => {
     if (!text) {
       return;
     }
+
+    setShowEmojiPicker(false);
 
     if (img) {
       const storageRef = ref(storage, uuid());
@@ -62,6 +67,7 @@ const Input = () => {
           urgent: urgentFlag,
         }),
       });
+      inputRef.current.focus();
     }
 
     await updateDoc(doc(db, 'userChats', currentUser.uid), {
@@ -82,9 +88,7 @@ const Input = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && e.shiftKey && text) {
-      const confirmation = window.confirm(
-        'Do you want to send urgent message?'
-      );
+      const confirmation = window.confirm('Do you want to send urgent message?')
       if (confirmation) {
         handleSend(true);
       }
@@ -96,11 +100,16 @@ const Input = () => {
 
   const handleRightClick = (e) => {
     e.preventDefault();
-    const confirmation = window.confirm('Do you want to send urgent message?');
+    const confirmation = window.confirm('Do you want to send urgent message?')
     if (confirmation) {
       handleSend(true);
     }
   };
+
+  const handleEmojiClick = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+    inputRef.current.focus();
+  }
 
   return (
     <div className="input">
@@ -110,6 +119,7 @@ const Input = () => {
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
         value={text}
+        ref={inputRef}
       />
       <div className="send">
         {/* TODO: Add back when image upload is working */}
@@ -120,12 +130,28 @@ const Input = () => {
           onChange={(e) => setImg(e.target.files[0])}
         />
         <label htmlFor="file">
-          <img src={Img} alt="" />
+          <img src={Img} alt=6"" />
         </label> */}
-        <button
-          onClick={() => handleSend(false)}
-          onContextMenu={handleRightClick}
-        >
+        <div className='emoji-picker'>
+          {showEmojiPicker && (
+            <EmojiPicker
+              height={400}
+              searchDisabled
+              skinTonesDisabled
+              previewConfig={{ showPreview: false }}
+              onEmojiClick={(selectedEmoji, e) => {
+                inputRef.current.focus();
+                const emoji = String.fromCodePoint(parseInt(selectedEmoji.unified, 16));
+                setText(text + emoji);
+              }}
+            />
+          )}
+        </div>
+        <button onClick={handleEmojiClick}>
+          &#128512;
+        </button>
+
+        <button onClick={() => handleSend(false)} onContextMenu={handleRightClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
