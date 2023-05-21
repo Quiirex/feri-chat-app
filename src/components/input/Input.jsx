@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { ChatContext } from '@/context/ChatContext';
 import {
@@ -19,6 +19,7 @@ const Input = () => {
   const [text, setText] = useState('');
   const [img, setImg] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const inputRef = useRef(null);
 
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
@@ -27,6 +28,8 @@ const Input = () => {
     if (!text) {
       return;
     }
+
+    setShowEmojiPicker(false);
 
     if (img) {
       const storageRef = ref(storage, uuid());
@@ -64,6 +67,7 @@ const Input = () => {
           urgent: urgentFlag,
         }),
       });
+      inputRef.current.focus();
     }
 
     await updateDoc(doc(db, 'userChats', currentUser.uid), {
@@ -92,7 +96,6 @@ const Input = () => {
       handleSend(false);
     } else {
     }
-    else { }
   };
 
   const handleRightClick = (e) => {
@@ -103,6 +106,11 @@ const Input = () => {
     }
   };
 
+  const handleEmojiClick = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+    inputRef.current.focus();
+  }
+
   return (
     <div className="input">
       <input
@@ -111,6 +119,7 @@ const Input = () => {
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
         value={text}
+        ref={inputRef}
       />
       <div className="send">
         {/* TODO: Add back when image upload is working */}
@@ -126,17 +135,19 @@ const Input = () => {
         <div className='emoji-picker'>
           {showEmojiPicker && (
             <EmojiPicker
+              searchDisabled
               height={400}
               skinTonesDisabled
               previewConfig={{ showPreview: false }}
               onEmojiClick={(selectedEmoji, e) => {
+                inputRef.current.focus();
                 const emoji = String.fromCodePoint(parseInt(selectedEmoji.unified, 16));
                 setText(text + emoji);
               }}
             />
           )}
         </div>
-        <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+        <button onClick={handleEmojiClick}>
           &#128512;
         </button>
 
