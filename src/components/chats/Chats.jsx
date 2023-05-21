@@ -7,6 +7,7 @@ import './Chats.scss';
 
 const Chats = () => {
   const [chats, setChats] = useState([]);
+  const [urgent, setUrgent] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
   const { dispatch } = useContext(ChatContext);
@@ -42,7 +43,7 @@ const Chats = () => {
             <img src={chat[1].userInfo.photoURL} alt="" />
             <div className="userChatInfo">
               <span>{chat[1].userInfo.displayName}</span>
-              <p>
+              <p className={chat[1].lastMessage.urgent && 'urgent'}>
                 {chat[1].lastMessage?.senderId === currentUser.uid && 'You: '}
                 {chat[1].lastMessage?.text.length > 25
                   ? chat[1].lastMessage?.text.slice(0, 25) + '...'
