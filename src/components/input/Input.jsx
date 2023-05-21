@@ -82,22 +82,22 @@ const Input = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && e.shiftKey && text) {         
+    if (e.key === 'Enter' && e.shiftKey && text) {
       const confirmation = window.confirm('Do you want to send urgent message?')
-      if(confirmation) {
+      if (confirmation) {
         handleSend(true);
       }
     }
     else if (e.key === 'Enter' && text) {
       handleSend(false);
     }
-    else {}
+    else { }
   };
 
   const handleRightClick = (e) => {
     e.preventDefault();
     const confirmation = window.confirm('Do you want to send urgent message?')
-    if(confirmation) {
+    if (confirmation) {
       handleSend(true);
     }
   };
@@ -120,23 +120,25 @@ const Input = () => {
           onChange={(e) => setImg(e.target.files[0])}
         />
         <label htmlFor="file">
-          <img src={Img} alt="" />
+          <img src={Img} alt=6"" />
         </label> */}
         <div className='emoji-picker'>
           {showEmojiPicker && (
             <EmojiPicker
-            height={400}
-            searchDisabled
-            skinTonesDisabled
-            previewConfig={{ showPreview:false }}
-            onEmojiClick={(selectedEmoji, e) => {
-              const emoji = String.fromCodePoint(parseInt(selectedEmoji.unified, 16));
-              setText(text + emoji);
-            }}
+              height={400}
+              skinTonesDisabled
+              previewConfig={{ showPreview: false }}
+              onEmojiClick={(selectedEmoji, e) => {
+                const emoji = String.fromCodePoint(parseInt(selectedEmoji.unified, 16));
+                setText(text + emoji);
+              }}
             />
           )}
         </div>
-        <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>emoji</button>
+        <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+          &#128512;
+        </button>
+
         <button onClick={() => handleSend(false)} onContextMenu={handleRightClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
