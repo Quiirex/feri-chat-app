@@ -7,7 +7,6 @@ import './Chats.scss';
 
 const Chats = () => {
   const [chats, setChats] = useState([]);
-  const [urgent, setUrgent] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
   const { dispatch } = useContext(ChatContext);
