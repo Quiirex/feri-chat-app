@@ -135,8 +135,8 @@ const Input = () => {
         <div className='emoji-picker'>
           {showEmojiPicker && (
             <EmojiPicker
-              searchDisabled
               height={400}
+              searchDisabled
               skinTonesDisabled
               previewConfig={{ showPreview: false }}
               onEmojiClick={(selectedEmoji, e) => {
