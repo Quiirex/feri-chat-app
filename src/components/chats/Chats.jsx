@@ -33,7 +33,7 @@ const Chats = () => {
     <div className="chats">
       {Object.entries(chats)
         ?.sort((a, b) => b[1].date - a[1].date)
-        .map((chat) => (
+        .map((chat, index) => (
           <div
             className="userChat"
             key={chat[0]}
@@ -43,6 +43,7 @@ const Chats = () => {
             <div className="userChatInfo">
               <span>{chat[1].userInfo.displayName}</span>
               <p>
+                {chat[1].lastMessage?.senderId === currentUser.uid && 'You: '}
                 {chat[1].lastMessage?.text.length > 25
                   ? chat[1].lastMessage?.text.slice(0, 25) + '...'
                   : chat[1].lastMessage?.text}

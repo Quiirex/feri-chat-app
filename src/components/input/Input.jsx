@@ -69,6 +69,7 @@ const Input = () => {
     await updateDoc(doc(db, 'userChats', currentUser.uid), {
       [data.chatId + '.lastMessage']: {
         text,
+        senderId: currentUser.uid,
       },
       [data.chatId + '.date']: serverTimestamp(),
     });
@@ -87,9 +88,9 @@ const Input = () => {
       if (confirmation) {
         handleSend(true);
       }
-    }
-    else if (e.key === 'Enter' && text) {
+    } else if (e.key === 'Enter' && text) {
       handleSend(false);
+    } else {
     }
     else { }
   };
