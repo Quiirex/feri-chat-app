@@ -22,27 +22,91 @@ const Search = () => {
   const { currentUser } = useContext(AuthContext);
 
   const handleSearch = async () => {
-    const q = query(
-      collection(db, 'users'),
-      where('displayName', '==', username)
-    );
+    if (username === '') {
+      setUser(null);
+      setErr(false);
+      return;
+    }
 
-    try {
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        setUser(doc.data());
-      });
-    } catch (err) {
-      setErr(true);
+    const names = username.trim().split(' ');
+    const firstName = names[0];
+    const lastName = names.length > 1 ? names[names.length - 1] : '';
+
+    let q;
+    let matchingUsers = [];
+
+    if (lastName !== '') {
+      // Search by last name
+      q = query(
+        collection(db, 'users'),
+        where('displayName', '>=', lastName),
+        where('displayName', '<=', lastName + '\uf8ff')
+      );
+
+      try {
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+          const user = doc.data();
+          const userFirstName = user.displayName.split(' ')[0].toLowerCase();
+          if (
+            userFirstName.includes(firstName.toLowerCase()) ||
+            user.displayName.toLowerCase().includes(firstName.toLowerCase())
+          ) {
+            matchingUsers.push(user);
+          }
+        });
+
+        if (matchingUsers.length > 0) {
+          setErr(false);
+        } else {
+          setErr(true);
+        }
+      } catch (err) {
+        setErr(true);
+      }
+    }
+
+    if (matchingUsers.length === 0) {
+      // Search by first name
+      q = query(
+        collection(db, 'users'),
+        where('displayName', '>=', firstName),
+        where('displayName', '<=', firstName + '\uf8ff')
+      );
+
+      try {
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+          const user = doc.data();
+          if (user.displayName.toLowerCase().includes(lastName.toLowerCase())) {
+            matchingUsers.push(user);
+          }
+        });
+
+        if (matchingUsers.length > 0) {
+          setErr(false);
+        } else {
+          setErr(true);
+        }
+      } catch (err) {
+        setErr(true);
+      }
+    }
+
+    if (matchingUsers.length > 0) {
+      setUser(matchingUsers[0]);
+    } else {
+      setUser(null);
     }
   };
 
   const handleKey = (e) => {
-    e.code === 'Enter' && handleSearch();
+    setUsername(e.target.value);
   };
 
   const handleSelect = async () => {
-    //check whether the group (chats in firestore) exists, if not create
     const combinedId =
       currentUser.uid > user.uid
         ? currentUser.uid + user.uid
@@ -51,10 +115,8 @@ const Search = () => {
       const res = await getDoc(doc(db, 'chats', combinedId));
 
       if (!res.exists()) {
-        //create a chat in chats collection
         await setDoc(doc(db, 'chats', combinedId), { messages: [] });
 
-        //create user chats
         await updateDoc(doc(db, 'userChats', currentUser.uid), {
           [combinedId + '.userInfo']: {
             uid: user.uid,
@@ -80,10 +142,7 @@ const Search = () => {
   };
 
   useEffect(() => {
-    // Set user state to null when username state is empty
-    if (username === '') {
-      setUser(null);
-    }
+    handleSearch();
   }, [username]);
 
   return (
@@ -92,8 +151,7 @@ const Search = () => {
         <input
           type="text"
           placeholder="Search for a user..."
-          onKeyDown={handleKey}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={handleKey}
           value={username}
         />
       </div>
