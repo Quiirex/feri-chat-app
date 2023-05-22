@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import More from '../../assets/more.png';
+import { useContext } from 'react';
 import Messages from '../messages/Messages';
 import Input from '../input/Input';
 import './Chat.scss';
@@ -12,10 +11,6 @@ const Chat = () => {
     <div className="chat">
       <div className="chatInfo">
         <span>{data.user?.displayName}</span>
-        <div className="chatIcons">
-          <img src={More} alt="" />
-          {/* TODO replace with icon */}
-        </div>
       </div>
       <Messages />
       <Input />
