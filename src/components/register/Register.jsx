@@ -25,6 +25,8 @@ const Register = () => {
     passwordAgain: '',
     photoURL: '',
   });
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState('');
 
   const validationSchema = Yup.object().shape({
     firstname: Yup.string().required('First name is required'),
@@ -40,7 +42,8 @@ const Register = () => {
         return inputs.password === value;
       })
       .required('Password confirmation is required'),
-    // photoURL: Yup.mixed().required('Profile picture is required'),
+    photoURL: Yup.mixed(),
+    emailAlreadyUsed: Yup.string(),
   });
 
   const [validationErrors, setValidationErrors] = useState({});
@@ -58,6 +61,12 @@ const Register = () => {
     }
   };
 
+  const isImageFile = (file) => {
+    const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  
+    return file && acceptedImageTypes.includes(file.type);
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -71,18 +80,27 @@ const Register = () => {
       );
 
       const file = e.target[5].files[0];
+      if (!isImageFile(file)) {
+        validationErrors.photoURL = 'Please upload a valid image file';
+        setError('Please upload a valid image file');
+        return;
+      }
       
       const storageRef = ref(
         storage,
         `photoURLs/${registrationResult.user.uid}/${new Date().getTime()}`
       );
 
-      await uploadBytesResumable(storageRef, file).then(() => {
-        
-      })
-      .catch((error) => {
-        console.log(error);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      // Add a listener for upload progress
+      uploadTask.on('state_changed', (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // Update the loader with the current progress percentage
+        setProgress(progress);
       });
+
+      await uploadTask;
 
       const photoURL = await getDownloadURL(storageRef);
       inputs.photoURL = photoURL;
@@ -112,8 +130,10 @@ const Register = () => {
     }
     catch (error) {
       const errors = {};
-      console.log(error)
-      error.inner.forEach((err) => {
+      if (error.code === 'auth/email-already-in-use') {
+        validationErrors.emailAlreadyUsed = 'Email already in use';
+      }
+      (error.inner || []).forEach((err) => {
         errors[err.path] = err.message;
       });
       setValidationErrors(errors);
@@ -135,6 +155,7 @@ const Register = () => {
                 placeholder="First name"
                 type="text"
               />
+              <div className="error">{validationErrors.firstname}</div>
               <input
                 className="lastname"
                 name="lastname"
@@ -143,6 +164,7 @@ const Register = () => {
                 placeholder="Last name"
                 type="text"
               />
+              <div className="error">{validationErrors.lastname}</div>
               <input
                 className="email"
                 name="email"
@@ -151,6 +173,7 @@ const Register = () => {
                 placeholder="Email"
                 type="email"
               />
+              <div className="error">{validationErrors.email}</div>
               <input
                 className="password"
                 name="password"
@@ -159,6 +182,7 @@ const Register = () => {
                 placeholder="Password"
                 type="password"
               />
+              <div className="error">{validationErrors.password}</div>
               <input
                 className="passwordAgain"
                 name="passwordAgain"
@@ -167,6 +191,7 @@ const Register = () => {
                 placeholder="Repeat Password"
                 type="password"
               />
+              <div className="error">{validationErrors.passwordAgain}</div>
               <input
                 // required
                 className="file-input"
@@ -176,6 +201,18 @@ const Register = () => {
                 type="file"
                 id="file"
               />
+              <div className="error">{validationErrors.photoURL}</div>
+             <div>
+                {progress > 0 && (
+                  <div>
+                    <progress className="progress" value={progress} max="100"></progress>
+                    <p>Loading...{progress.toFixed(2)}%</p>
+                  </div>
+                )}
+            </div>
+            {validationErrors.emailAlreadyUsed && (
+              <div className="error">{validationErrors.emailAlreadyUsed}</div>
+            )}
               <button className="registerButton">Register</button>
             </form>
             <p>
