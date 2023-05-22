@@ -26,5 +26,13 @@
       font-size: 14px;
       color: rgb(112, 112, 112);
     }
+    .urgent {
+      color: red;
+      font-weight: 600;
+    }
   }
+}
+.unseen {
+  font-weight: 800;
+  background-color: #dedede;
 }

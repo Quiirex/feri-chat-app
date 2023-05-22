@@ -74,6 +74,8 @@ const Input = () => {
       [data.chatId + '.lastMessage']: {
         text,
         senderId: currentUser.uid,
+        urgent: urgentFlag,
+        seen: true,
       },
       [data.chatId + '.date']: serverTimestamp(),
     });
@@ -81,6 +83,9 @@ const Input = () => {
     await updateDoc(doc(db, 'userChats', data.user.uid), {
       [data.chatId + '.lastMessage']: {
         text,
+        senderId: currentUser.uid,
+        urgent: urgentFlag,
+        seen: false,
       },
       [data.chatId + '.date']: serverTimestamp(),
     });
@@ -88,7 +93,9 @@ const Input = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && e.shiftKey && text) {
-      const confirmation = window.confirm('Do you want to send urgent message?')
+      const confirmation = window.confirm(
+        'Do you want to send urgent message?'
+      );
       if (confirmation) {
         handleSend(true);
       }
@@ -100,7 +107,7 @@ const Input = () => {
 
   const handleRightClick = (e) => {
     e.preventDefault();
-    const confirmation = window.confirm('Do you want to send urgent message?')
+    const confirmation = window.confirm('Do you want to send urgent message?');
     if (confirmation) {
       handleSend(true);
     }
@@ -109,7 +116,7 @@ const Input = () => {
   const handleEmojiClick = () => {
     setShowEmojiPicker(!showEmojiPicker);
     inputRef.current.focus();
-  }
+  };
 
   return (
     <div className="input">
@@ -132,7 +139,7 @@ const Input = () => {
         <label htmlFor="file">
           <img src={Img} alt=6"" />
         </label> */}
-        <div className='emoji-picker'>
+        <div className="emoji-picker">
           {showEmojiPicker && (
             <EmojiPicker
               height={400}
@@ -141,17 +148,20 @@ const Input = () => {
               previewConfig={{ showPreview: false }}
               onEmojiClick={(selectedEmoji, e) => {
                 inputRef.current.focus();
-                const emoji = String.fromCodePoint(parseInt(selectedEmoji.unified, 16));
+                const emoji = String.fromCodePoint(
+                  parseInt(selectedEmoji.unified, 16)
+                );
                 setText(text + emoji);
               }}
             />
           )}
         </div>
-        <button onClick={handleEmojiClick}>
-          &#128512;
-        </button>
+        <button onClick={handleEmojiClick}>&#128512;</button>
 
-        <button onClick={() => handleSend(false)} onContextMenu={handleRightClick}>
+        <button
+          onClick={() => handleSend(false)}
+          onContextMenu={handleRightClick}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
