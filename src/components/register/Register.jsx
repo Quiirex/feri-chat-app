@@ -26,7 +26,7 @@ const Register = () => {
     photoURL: '',
   });
   const [progress, setProgress] = useState(0);
-  const [error, setError] = useState('');
+  const [usedEmail, setUsedEmail] = useState(false);
 
   const validationSchema = Yup.object().shape({
     firstname: Yup.string().required('First name is required'),
@@ -43,7 +43,6 @@ const Register = () => {
       })
       .required('Password confirmation is required'),
     photoURL: Yup.mixed(),
-    emailAlreadyUsed: Yup.string(),
   });
 
   const [validationErrors, setValidationErrors] = useState({});
@@ -70,6 +69,8 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    setUsedEmail(false);
+
     try {
       await validationSchema.validate(inputs, { abortEarly: false });
 
@@ -80,11 +81,6 @@ const Register = () => {
       );
 
       const file = e.target[5].files[0];
-      if (!isImageFile(file)) {
-        validationErrors.photoURL = 'Please upload a valid image file';
-        setError('Please upload a valid image file');
-        return;
-      }
       
       const storageRef = ref(
         storage,
@@ -131,7 +127,7 @@ const Register = () => {
     catch (error) {
       const errors = {};
       if (error.code === 'auth/email-already-in-use') {
-        validationErrors.emailAlreadyUsed = 'Email already in use';
+        setUsedEmail(true);
       }
       (error.inner || []).forEach((err) => {
         errors[err.path] = err.message;
@@ -155,7 +151,7 @@ const Register = () => {
                 placeholder="First name"
                 type="text"
               />
-              <div className="error">{validationErrors.firstname}</div>
+              <div className="error text-center">{validationErrors.firstname}</div>
               <input
                 className="lastname"
                 name="lastname"
@@ -164,7 +160,7 @@ const Register = () => {
                 placeholder="Last name"
                 type="text"
               />
-              <div className="error">{validationErrors.lastname}</div>
+              <div className="error text-center">{validationErrors.lastname}</div>
               <input
                 className="email"
                 name="email"
@@ -173,7 +169,7 @@ const Register = () => {
                 placeholder="Email"
                 type="email"
               />
-              <div className="error">{validationErrors.email}</div>
+              <div className="error text-center">{validationErrors.email}</div>
               <input
                 className="password"
                 name="password"
@@ -182,7 +178,7 @@ const Register = () => {
                 placeholder="Password"
                 type="password"
               />
-              <div className="error">{validationErrors.password}</div>
+              <div className="error text-center">{validationErrors.password}</div>
               <input
                 className="passwordAgain"
                 name="passwordAgain"
@@ -191,7 +187,7 @@ const Register = () => {
                 placeholder="Repeat Password"
                 type="password"
               />
-              <div className="error">{validationErrors.passwordAgain}</div>
+              <div className="error text-center">{validationErrors.passwordAgain}</div>
               <input
                 // required
                 className="file-input"
@@ -200,9 +196,10 @@ const Register = () => {
                 onChange={handleChange}
                 type="file"
                 id="file"
+                accept="image/*"
               />
-              <div className="error">{validationErrors.photoURL}</div>
-             <div>
+              <div className="error text-center">{validationErrors.photoURL}</div>
+             <div className="text-center">
                 {progress > 0 && (
                   <div>
                     <progress className="progress" value={progress} max="100"></progress>
@@ -210,8 +207,8 @@ const Register = () => {
                   </div>
                 )}
             </div>
-            {validationErrors.emailAlreadyUsed && (
-              <div className="error">{validationErrors.emailAlreadyUsed}</div>
+            {usedEmail && (
+              <div className="error text-center">Email already in use!</div>
             )}
               <button className="registerButton">Register</button>
             </form>
