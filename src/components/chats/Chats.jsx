@@ -13,7 +13,6 @@ const Chats = () => {
 
   useEffect(() => {
     const getChats = () => {
-      const i = 0;
       const unsub = onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
         setChats(doc.data());
         if (doc.exists()) {
