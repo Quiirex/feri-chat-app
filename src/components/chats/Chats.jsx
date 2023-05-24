@@ -13,9 +13,12 @@ const Chats = () => {
 
   useEffect(() => {
     const getChats = () => {
-      const unsub = onSnapshot(doc(db, 'userChats', currentUser?.uid), (doc) => {
-        setChats(doc.data());
-      });
+      const unsub = onSnapshot(
+        doc(db, 'userChats', currentUser?.uid),
+        (doc) => {
+          setChats(doc.data());
+        }
+      );
 
       return () => {
         unsub();
@@ -48,8 +51,7 @@ const Chats = () => {
             <div
               className={userChatClass}
               key={chat[0]}
-              onClick={() => handleSelect(chat[1].userInfo, chat[0])}
-            >
+              onClick={() => handleSelect(chat[1].userInfo, chat[0])}>
               <img src={chat[1].userInfo?.photoURL} alt="" />
               <div className="userChatInfo">
                 <span>{chat[1].userInfo?.displayName}</span>

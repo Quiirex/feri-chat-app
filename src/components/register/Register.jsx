@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth, db, storage, } from '@/services/firebase';
+import { auth, db, storage } from '@/services/firebase';
 
 import {
   getDownloadURL,
@@ -62,7 +62,7 @@ const Register = () => {
 
   const isImageFile = (file) => {
     const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-  
+
     return file && acceptedImageTypes.includes(file.type);
   };
 
@@ -81,7 +81,7 @@ const Register = () => {
       );
 
       const file = e.target[5].files[0];
-      
+
       const storageRef = ref(
         storage,
         `photoURLs/${registrationResult.user.uid}/${new Date().getTime()}`
@@ -91,7 +91,8 @@ const Register = () => {
 
       // Add a listener for upload progress
       uploadTask.on('state_changed', (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         // Update the loader with the current progress percentage
         setProgress(progress);
       });
@@ -119,12 +120,10 @@ const Register = () => {
 
         await setDoc(doc(db, 'userChats', registrationResult.user.uid), {});
         navigate('/login');
-      }
-      catch (error) {
+      } catch (error) {
         alert(error.message, error.stack);
       }
-    }
-    catch (error) {
+    } catch (error) {
       const errors = {};
       if (error.code === 'auth/email-already-in-use') {
         setUsedEmail(true);
@@ -151,7 +150,9 @@ const Register = () => {
                 placeholder="First name"
                 type="text"
               />
-              <div className="error text-center">{validationErrors.firstname}</div>
+              <div className="error text-center">
+                {validationErrors.firstname}
+              </div>
               <input
                 className="lastname"
                 name="lastname"
@@ -160,7 +161,9 @@ const Register = () => {
                 placeholder="Last name"
                 type="text"
               />
-              <div className="error text-center">{validationErrors.lastname}</div>
+              <div className="error text-center">
+                {validationErrors.lastname}
+              </div>
               <input
                 className="email"
                 name="email"
@@ -178,7 +181,9 @@ const Register = () => {
                 placeholder="Password"
                 type="password"
               />
-              <div className="error text-center">{validationErrors.password}</div>
+              <div className="error text-center">
+                {validationErrors.password}
+              </div>
               <input
                 className="passwordAgain"
                 name="passwordAgain"
@@ -187,7 +192,9 @@ const Register = () => {
                 placeholder="Repeat Password"
                 type="password"
               />
-              <div className="error text-center">{validationErrors.passwordAgain}</div>
+              <div className="error text-center">
+                {validationErrors.passwordAgain}
+              </div>
               <input
                 // required
                 className="file-input"
@@ -198,18 +205,23 @@ const Register = () => {
                 id="file"
                 accept="image/*"
               />
-              <div className="error text-center">{validationErrors.photoURL}</div>
-             <div className="text-center">
+              <div className="error text-center">
+                {validationErrors.photoURL}
+              </div>
+              <div className="text-center">
                 {progress > 0 && (
                   <div>
-                    <progress className="progress" value={progress} max="100"></progress>
+                    <progress
+                      className="progress"
+                      value={progress}
+                      max="100"></progress>
                     <p>Loading...{progress.toFixed(2)}%</p>
                   </div>
                 )}
-            </div>
-            {usedEmail && (
-              <div className="error text-center">Email already in use!</div>
-            )}
+              </div>
+              {usedEmail && (
+                <div className="error text-center">Email already in use!</div>
+              )}
               <button className="registerButton">Register</button>
             </form>
             <p>
