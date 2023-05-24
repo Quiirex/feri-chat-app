@@ -38,10 +38,10 @@ const Chats = () => {
       const lastMessage = newChats[lastChatId]?.lastMessage;
     
       console.log("message: " + lastMessage.text + "\nseen: " + lastMessage.seen + "\nsender: " + lastMessage.senderId + "\ncurrent: " + currentUser.uid)
-      if (lastMessage && !lastMessage.seen && lastMessage.senderId !== currentUser.uid) {
+      if (lastMessage.senderId !== currentUser.uid) {
         console.log("New message arrived");
         new Notification('FERI chat', {
-          body: lastMessage.text || "Novo sporočilo",
+          body: /*lastMessage.text || */"New message",
         });
       }
     });
