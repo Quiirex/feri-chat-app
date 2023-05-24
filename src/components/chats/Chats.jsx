@@ -22,7 +22,32 @@ const Chats = () => {
       };
     };
 
-    currentUser.uid && getChats();
+    // Request notification permission
+    Notification.requestPermission().then((result) => {
+      console.log('Notification permission:', result);
+    });
+
+    // Add listener for new messages
+    const chatDocRef = doc(db, 'userChats', currentUser.uid);
+    const messageListener = onSnapshot(chatDocRef, (snapshot) => {
+      const newChats = snapshot.data();
+      setChats(newChats);
+    
+      const chatIds = Object.keys(newChats);
+      const lastChatId = chatIds[chatIds.length - 1];
+      const lastMessage = newChats[lastChatId]?.lastMessage;
+    
+      if (lastMessage && !lastMessage.seen && lastMessage.senderId !== currentUser.uid) {
+        new Notification('FERI chat', {
+          body: lastMessage.text || "Novo sporočilo",
+        });
+      }
+    });
+    
+
+    return () => {
+      messageListener();
+    };
   }, [currentUser.uid]);
 
   const handleSelect = async (u, chatId) => {
