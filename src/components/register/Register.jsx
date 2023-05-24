@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth, db, storage } from '@/services/firebase';
+import { auth, db, storage, } from '@/services/firebase';
+
 import {
   getDownloadURL,
   ref,
@@ -24,6 +25,8 @@ const Register = () => {
     passwordAgain: '',
     photoURL: '',
   });
+  const [progress, setProgress] = useState(0);
+  const [usedEmail, setUsedEmail] = useState(false);
 
   const validationSchema = Yup.object().shape({
     firstname: Yup.string().required('First name is required'),
@@ -39,7 +42,7 @@ const Register = () => {
         return inputs.password === value;
       })
       .required('Password confirmation is required'),
-    // photoURL: Yup.mixed().required('Profile picture is required'),
+    photoURL: Yup.mixed(),
   });
 
   const [validationErrors, setValidationErrors] = useState({});
@@ -57,8 +60,16 @@ const Register = () => {
     }
   };
 
+  const isImageFile = (file) => {
+    const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  
+    return file && acceptedImageTypes.includes(file.type);
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    setUsedEmail(false);
 
     try {
       await validationSchema.validate(inputs, { abortEarly: false });
@@ -69,19 +80,31 @@ const Register = () => {
         inputs.password
       );
 
-      // const storageRef = ref(
-      //   storage,
-      //   `photoURLs/${registrationResult.user.uid}/${new Date().getTime()}`
-      // );
+      const file = e.target[5].files[0];
+      
+      const storageRef = ref(
+        storage,
+        `photoURLs/${registrationResult.user.uid}/${new Date().getTime()}`
+      );
 
-      // const file = e.target[5].files[0];
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-      // await uploadBytesResumable(storageRef, file).then(() => {
-      //   getDownloadURL(storageRef).then(async (url) => {
+      // Add a listener for upload progress
+      uploadTask.on('state_changed', (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // Update the loader with the current progress percentage
+        setProgress(progress);
+      });
+
+      await uploadTask;
+
+      const photoURL = await getDownloadURL(storageRef);
+      inputs.photoURL = photoURL;
+
       try {
         await updateProfile(registrationResult.user, {
           displayName: inputs.firstname + ' ' + inputs.lastname,
-          photoURL: 'https://static.thenounproject.com/png/363640-200.png',
+          photoURL: inputs.photoURL,
         });
 
         await setDoc(doc(db, 'users', registrationResult.user.uid), {
@@ -90,21 +113,23 @@ const Register = () => {
           firstname: inputs.firstname,
           lastname: inputs.lastname,
           email: inputs.email,
-          photoURL: 'https://static.thenounproject.com/png/363640-200.png',
+          photoURL: inputs.photoURL,
           role: 'Student',
         });
 
         await setDoc(doc(db, 'userChats', registrationResult.user.uid), {});
-
         navigate('/login');
-      } catch (error) {
+      }
+      catch (error) {
         alert(error.message, error.stack);
       }
-      //   });
-      // });
-    } catch (error) {
+    }
+    catch (error) {
       const errors = {};
-      error.inner.forEach((err) => {
+      if (error.code === 'auth/email-already-in-use') {
+        setUsedEmail(true);
+      }
+      (error.inner || []).forEach((err) => {
         errors[err.path] = err.message;
       });
       setValidationErrors(errors);
@@ -126,6 +151,7 @@ const Register = () => {
                 placeholder="First name"
                 type="text"
               />
+              <div className="error text-center">{validationErrors.firstname}</div>
               <input
                 className="lastname"
                 name="lastname"
@@ -134,6 +160,7 @@ const Register = () => {
                 placeholder="Last name"
                 type="text"
               />
+              <div className="error text-center">{validationErrors.lastname}</div>
               <input
                 className="email"
                 name="email"
@@ -142,6 +169,7 @@ const Register = () => {
                 placeholder="Email"
                 type="email"
               />
+              <div className="error text-center">{validationErrors.email}</div>
               <input
                 className="password"
                 name="password"
@@ -150,6 +178,7 @@ const Register = () => {
                 placeholder="Password"
                 type="password"
               />
+              <div className="error text-center">{validationErrors.password}</div>
               <input
                 className="passwordAgain"
                 name="passwordAgain"
@@ -158,6 +187,7 @@ const Register = () => {
                 placeholder="Repeat Password"
                 type="password"
               />
+              <div className="error text-center">{validationErrors.passwordAgain}</div>
               <input
                 // required
                 className="file-input"
@@ -166,7 +196,20 @@ const Register = () => {
                 onChange={handleChange}
                 type="file"
                 id="file"
+                accept="image/*"
               />
+              <div className="error text-center">{validationErrors.photoURL}</div>
+             <div className="text-center">
+                {progress > 0 && (
+                  <div>
+                    <progress className="progress" value={progress} max="100"></progress>
+                    <p>Loading...{progress.toFixed(2)}%</p>
+                  </div>
+                )}
+            </div>
+            {usedEmail && (
+              <div className="error text-center">Email already in use!</div>
+            )}
               <button className="registerButton">Register</button>
             </form>
             <p>

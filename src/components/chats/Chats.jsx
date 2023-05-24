@@ -13,7 +13,7 @@ const Chats = () => {
 
   useEffect(() => {
     const getChats = () => {
-      const unsub = onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
+      const unsub = onSnapshot(doc(db, 'userChats', currentUser?.uid), (doc) => {
         setChats(doc.data());
       });
 
@@ -23,7 +23,7 @@ const Chats = () => {
     };
 
     currentUser.uid && getChats();
-  }, [currentUser.uid]);
+  }, [currentUser?.uid]);
 
   const handleSelect = async (u, chatId) => {
     dispatch({ type: 'CHANGE_USER', payload: u });
