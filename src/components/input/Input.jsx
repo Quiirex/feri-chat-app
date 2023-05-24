@@ -25,36 +25,38 @@ const Input = () => {
   const { data } = useContext(ChatContext);
 
   const handleSend = async (urgentFlag) => {
-    if (!text) {
+    if (!text && !img) {
       return;
     }
 
     setShowEmojiPicker(false);
 
     if (img) {
-      const storageRef = ref(storage, uuid());
+    const storageRef = ref(storage, uuid());
+    const uploadTask = uploadBytesResumable(storageRef, img);
 
-      const uploadTask = uploadBytesResumable(storageRef, img);
+    try {
+      const snapshot = await uploadTask;
 
-      uploadTask.on(
-        (error) => {
-          //TODO: Handle Error
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateDoc(doc(db, 'chats', data.chatId), {
-              messages: arrayUnion({
-                id: uuid(),
-                text,
-                senderId: currentUser.uid,
-                date: Timestamp.now(),
-                img: downloadURL,
-              }),
-            });
-          });
-        }
-      );
-    } else {
+      const downloadURL = await getDownloadURL(snapshot.ref);
+
+      await updateDoc(doc(db, 'chats', data.chatId), {
+        messages: arrayUnion({
+          id: uuid(),
+          text,
+          senderId: currentUser.uid,
+          date: Timestamp.now(),
+          img: downloadURL,
+        }),
+      });
+
+      setText('');
+      setImg(null);
+      inputRef.current.focus();
+    } catch (error) {
+      // Handle the error here
+    }
+  } else {
       setText('');
       setImg(null);
 
@@ -91,6 +93,11 @@ const Input = () => {
     });
   };
 
+  const clearInput = () => {
+    setText('');
+    setImg(null);
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && e.shiftKey && text) {
       const confirmation = window.confirm(
@@ -98,9 +105,11 @@ const Input = () => {
       );
       if (confirmation) {
         handleSend(true);
+        clearInput();
       }
     } else if (e.key === 'Enter' && text) {
       handleSend(false);
+      clearInput();
     } else {
     }
   };
