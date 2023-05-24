@@ -13,8 +13,21 @@ const Chats = () => {
 
   useEffect(() => {
     const getChats = () => {
+      const i = 0;
       const unsub = onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
         setChats(doc.data());
+        if (doc.exists()) {
+          const data = doc.data();
+          const newMessageArrived = Object.values(data).some(
+            (chat) => !chat.lastMessage?.seen
+          );
+          if (newMessageArrived) {
+            console.log('New message arrived');
+            new Notification('FERI chat', {
+              body: 'New message',
+            });
+          }
+        }
       });
 
       return () => {
@@ -22,34 +35,7 @@ const Chats = () => {
       };
     };
 
-    // Request notification permission
-    Notification.requestPermission().then((result) => {
-      console.log('Notification permission:', result);
-    });
-
-    // Add listener for new messages
-    const chatDocRef = doc(db, 'userChats', currentUser.uid);
-    const messageListener = onSnapshot(chatDocRef, (snapshot) => {
-      const newChats = snapshot.data();
-      setChats(newChats);
-    
-      const chatIds = Object.keys(newChats);
-      const lastChatId = chatIds[chatIds.length - 1];
-      const lastMessage = newChats[lastChatId]?.lastMessage;
-    
-      console.log("message: " + lastMessage.text + "\nseen: " + lastMessage.seen + "\nsender: " + lastMessage.senderId + "\ncurrent: " + currentUser.uid)
-      if (lastMessage.senderId !== currentUser.uid) {
-        console.log("New message arrived");
-        new Notification('FERI chat', {
-          body: /*lastMessage.text || */"New message",
-        });
-      }
-    });
-    
-
-    return () => {
-      messageListener();
-    };
+    currentUser.uid && getChats();
   }, [currentUser.uid]);
 
   const handleSelect = async (u, chatId) => {
