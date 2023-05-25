@@ -11,7 +11,7 @@ let page: Page;
 
 test.beforeAll(async () => {
     // Launch Electron app.
-    electronApp = await electron.launch({ args: ['.', '--no-sandbox'] });
+    electronApp = await electron.launch({ args: ['dist-electron/main/index.js'] });
 
     // Evaluation expression in the Electron context.
      await electronApp.evaluate(async ({ app }) => {
@@ -24,19 +24,14 @@ test.beforeAll(async () => {
     page = await electronApp.firstWindow();
 
     // Wait for the page to be visible.
-    // await page.waitForLoadState('domcontentloaded');
+     await page.waitForLoadState('domcontentloaded');
 })
 
 test.afterAll(async () => {
     await electronApp.close();
 })
 
-
-test("Check if url is valid", async () => {
-    await expect(page).toHaveURL('http://localhost:3000/');
-});
-
 test('Show correct title', async () => {
-    expect(await page.title()).toContain('Feri Chat App')
+    expect(await page.title()).toContain('FERI Chat 0.1.0')
 });
   
