@@ -52,60 +52,13 @@ test('Login form', async () => {
     expect(await page.textContent('.login')).toBeTruthy();
 });
 
-test('Click login button', async () => {
+test('Credentials are empty', async () => {
     const loginButton = await page.$('.loginButton');
     await loginButton?.click();
     await page.waitForTimeout(1000);
     expect(await page.textContent('.error')).toBe(' Invalid credentials ');
 });
 
-test('Menu appears', async () => {
+test('Menu appear', async () => {
     expect(await page.textContent('#menu-bar')).toBeTruthy();
 });
-
-
-
-
-
-
-/* test('login form renders correctly', async () => {
-    const emailInput = await page.$('.email');
-    const passwordInput = await page.$('.password');
-    const submitButton = await page.$('.loginButton');
-
-    expect(emailInput).toBeTruthy();
-    expect(passwordInput).toBeTruthy();
-    expect(submitButton).toBeTruthy();
-});
-
-test('Unvalid credentials', async () => {
-    const emailInput = await page.$('.email');
-    const passwordInput = await page.$('.password');
-    const submitButton = await page.$('.loginButton');
-
-    await emailInput?.fill('test@test.com');
-    await passwordInput?.fill('test');
-    await submitButton?.click();
-
-    await page.waitForTimeout(1000);
-
-    const error = await page.$('.error');
-
-    expect(error).toBeTruthy();
-});
-
-test('Valid credentials', async () => {
-    const emailInput = await page.$('.email');
-    const passwordInput = await page.$('.password');
-    const submitButton = await page.$('.loginButton');
-
-    await emailInput?.fill('srecko.debevc@gmail.com');
-    await passwordInput?.fill('Test123');
-    await submitButton?.click();
-
-    await page.waitForTimeout(3000);
-
-    const userName = await page.textContent('.user > span');
-
-    expect(userName).toBe('Srečko Debevc');
-}); */
