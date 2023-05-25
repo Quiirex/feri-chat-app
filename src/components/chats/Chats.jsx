@@ -35,7 +35,7 @@ const Chats = () => {
     };
 
     currentUser.uid && getChats();
-  }, [currentUser.uid]);
+  }, [currentUser?.uid]);
 
   const handleSelect = async (u, chatId) => {
     dispatch({ type: 'CHANGE_USER', payload: u });
@@ -60,8 +60,7 @@ const Chats = () => {
             <div
               className={userChatClass}
               key={chat[0]}
-              onClick={() => handleSelect(chat[1].userInfo, chat[0])}
-            >
+              onClick={() => handleSelect(chat[1].userInfo, chat[0])}>
               <img src={chat[1].userInfo?.photoURL} alt="" />
               <div className="userChatInfo">
                 <span>{chat[1].userInfo?.displayName}</span>

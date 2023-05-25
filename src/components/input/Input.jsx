@@ -11,7 +11,7 @@ import {
 import { db, storage } from '../../services/firebase';
 import { v4 as uuid } from 'uuid';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-// import Img from '../../assets/img.png';
+import Img from '../../assets/img.png';
 import EmojiPicker from 'emoji-picker-react';
 import './Input.scss';
 
@@ -25,7 +25,7 @@ const Input = () => {
   const { data } = useContext(ChatContext);
 
   const handleSend = async (urgentFlag) => {
-    if (!text) {
+    if (!text && !img) {
       return;
     }
 
@@ -33,27 +33,29 @@ const Input = () => {
 
     if (img) {
       const storageRef = ref(storage, uuid());
-
       const uploadTask = uploadBytesResumable(storageRef, img);
 
-      uploadTask.on(
-        (error) => {
-          //TODO: Handle Error
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateDoc(doc(db, 'chats', data.chatId), {
-              messages: arrayUnion({
-                id: uuid(),
-                text,
-                senderId: currentUser.uid,
-                date: Timestamp.now(),
-                img: downloadURL,
-              }),
-            });
-          });
-        }
-      );
+      try {
+        const snapshot = await uploadTask;
+
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        await updateDoc(doc(db, 'chats', data.chatId), {
+          messages: arrayUnion({
+            id: uuid(),
+            text,
+            senderId: currentUser.uid,
+            date: Timestamp.now(),
+            img: downloadURL,
+          }),
+        });
+
+        setText('');
+        setImg(null);
+        inputRef.current.focus();
+      } catch (error) {
+        // Handle the error here
+      }
     } else {
       setText('');
       setImg(null);
@@ -91,6 +93,11 @@ const Input = () => {
     });
   };
 
+  const clearInput = () => {
+    setText('');
+    setImg(null);
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && e.shiftKey && text) {
       const confirmation = window.confirm(
@@ -98,9 +105,11 @@ const Input = () => {
       );
       if (confirmation) {
         handleSend(true);
+        clearInput();
       }
     } else if (e.key === 'Enter' && text) {
       handleSend(false);
+      clearInput();
     } else {
     }
   };
@@ -129,16 +138,16 @@ const Input = () => {
         ref={inputRef}
       />
       <div className="send">
-        {/* TODO: Add back when image upload is working */}
-        {/* <input
+        <input
           type="file"
-          style={{ display: 'none' }}
           id="file"
+          style={{ display: 'none' }}
           onChange={(e) => setImg(e.target.files[0])}
+          accept="image/*"
         />
         <label htmlFor="file">
-          <img src={Img} alt=6"" />
-        </label> */}
+          <img src={Img} alt="" />
+        </label>
         <div className="emoji-picker">
           {showEmojiPicker && (
             <EmojiPicker
@@ -160,8 +169,7 @@ const Input = () => {
 
         <button
           onClick={() => handleSend(false)}
-          onContextMenu={handleRightClick}
-        >
+          onContextMenu={handleRightClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -170,8 +178,7 @@ const Input = () => {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="h-5 w-5 mr-1.5"
-          >
+            className="h-5 w-5 mr-1.5">
             <path d="M2 22L13 11" />
             <path d="M2 22L9 2L13 11L22 15L2 22Z" />
           </svg>

@@ -34,8 +34,7 @@ const Message = ({ message }) => {
       className={`message ${message.senderId === currentUser.uid && 'owner'}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
-    >
+      onMouseMove={handleMouseMove}>
       <div className="messageInfo">
         <img
           src={

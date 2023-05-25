@@ -77,16 +77,14 @@ const Menu = () => {
         <button
           ref={minimizeButtonRef}
           className="menubar-btn"
-          id="minimize-btn"
-        >
+          id="minimize-btn">
           <i className="fas fa-window-minimize"></i>
         </button>
         <button
           ref={maxUnmaxButtonRef}
           onClick={maximizeWindow}
           className="menubar-btn"
-          id="max-unmax-btn"
-        >
+          id="max-unmax-btn">
           <i className="far fa-square"></i>
         </button>
         <button ref={closeButtonRef} className="menubar-btn" id="close-btn">
