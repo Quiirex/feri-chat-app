@@ -8,9 +8,7 @@ import { ChatContextProvider } from './context/ChatContext';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
     <ChatContextProvider>
-      <React.StrictMode>
         <App />
-      </React.StrictMode>
     </ChatContextProvider>
   </AuthContextProvider>
 );

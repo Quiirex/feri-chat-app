@@ -13,12 +13,21 @@ const Chats = () => {
 
   useEffect(() => {
     const getChats = () => {
-      const unsub = onSnapshot(
-        doc(db, 'userChats', currentUser?.uid),
-        (doc) => {
-          setChats(doc.data());
+      const unsub = onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
+        setChats(doc.data());
+        if (doc.exists()) {
+          const data = doc.data();
+          const newMessageArrived = Object.values(data).some(
+            (chat) => !chat.lastMessage?.seen
+          );
+          if (newMessageArrived) {
+            console.log('New message arrived');
+            new Notification('FERI chat', {
+              body: 'New message',
+            });
+          }
         }
-      );
+      });
 
       return () => {
         unsub();
