@@ -8,6 +8,8 @@ import {
 
 let electronApp: ElectronApplication;
 
+test.describe.configure({ mode: 'serial' });
+
 let page: Page;
 
 test.beforeAll(async () => {
