@@ -1,9 +1,9 @@
 import {
-    ElectronApplication,
-    Page,
-    _electron as electron,
-    expect,
-    test,
+  ElectronApplication,
+  Page,
+  _electron as electron,
+  expect,
+  test,
 } from '@playwright/test';
 
 let electronApp: ElectronApplication;
@@ -11,54 +11,48 @@ let electronApp: ElectronApplication;
 let page: Page;
 
 test.beforeAll(async () => {
-    // Launch Electron app.
-    electronApp = await electron.launch({
-        args: ['dist-electron/main/index.js'],
-    });
+  electronApp = await electron.launch({
+    args: ['dist-electron/main/index.js'],
+  });
 
-    // Evaluation expression in the Electron context.
-    await electronApp.evaluate(async ({ app }) => {
-        // This runs in the main Electron process, parameter here is always
-        // the result of the require('electron') in the main app script.
-        return app.getAppPath();
-    });
+  await electronApp.evaluate(async ({ app }) => {
+    return app.getAppPath();
+  });
 
-    // Get the first window that the app opens, wait if necessary.
-    page = await electronApp.firstWindow();
+  page = await electronApp.firstWindow();
 
-    await page.goto('http://localhost:5173/login');
+  await page.goto('http://localhost:5173/login');
 
-    // Wait for the page to be visible.
-    await page.waitForLoadState('domcontentloaded');
+  await page.waitForLoadState('domcontentloaded');
 });
 
 test.afterAll(async () => {
-    await electronApp.close();
+  await electronApp.close();
 });
 
 test('Show correct title', async () => {
-    expect(await page.title()).toContain('FERI Chat 0.1.0')
+  expect(await page.title()).toContain('FERI Chat 0.1.0');
 });
 
 test('Show correct login form title', async () => {
-    expect(await page.textContent('.loginButton')).toBe('Login');
+  expect(await page.textContent('.loginButton')).toBe('Login');
 });
 
 test('Login title', async () => {
-    expect(await page.textContent('.logo')).toBe(' FERI Chat ');
+  expect(await page.textContent('.logo')).toBe(' FERI Chat ');
 });
 
 test('Login form', async () => {
-    expect(await page.textContent('.login')).toBeTruthy();
+  expect(await page.textContent('.login')).toBeTruthy();
 });
 
 test('Credentials are empty', async () => {
-    const loginButton = await page.$('.loginButton');
-    await loginButton?.click();
-    await page.waitForTimeout(1000);
-    expect(await page.textContent('.error')).toBe(' Invalid credentials ');
+  const loginButton = await page.$('.loginButton');
+  await loginButton?.click();
+  await page.waitForTimeout(1000);
+  expect(await page.textContent('.error')).toBe(' Invalid credentials ');
 });
 
 test('Menu appear', async () => {
-    expect(await page.textContent('#menu-bar')).toBeTruthy();
+  expect(await page.textContent('#menu-bar')).toBeTruthy();
 });
