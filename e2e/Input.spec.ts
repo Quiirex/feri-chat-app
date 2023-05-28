@@ -98,7 +98,6 @@ test('user can send a message with enter', async () => {
   
     await messageInput?.fill('Test message sent with enter');
     await page.keyboard.press('Enter');
-  
     await page.waitForTimeout(1000);
   
     const message = await page.textContent(
