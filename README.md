@@ -3,7 +3,7 @@
 
 <p align="center">
   <a href="https://github.com/Quiirex/feri-chat-app">
-    <img src="https://fontawesomeicons.com/lib/svg/logo-electron.svg" alt="Logo" width="150" height="150">
+    <img src="https://github.com/Quiirex/feri-chat-app/raw/master/public/favicon.ico" alt="Logo" width="150" height="150">
   </a>
 
   <h1 align="center">FERI Chat</h1>
