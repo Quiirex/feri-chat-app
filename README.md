@@ -1,23 +1,28 @@
 [![Production Workflow](https://github.com/Quiirex/feri-chat-app/actions/workflows/prod.yml/badge.svg)](https://github.com/Quiirex/feri-chat-app/actions/workflows/prod.yml)
+<br />
 
-# FERI Chat App (Electron + React + Vite)
+<p align="center">
+  <a href="https://github.com/Quiirex/feri-chat-app">
+    <img src="https://fontawesomeicons.com/lib/svg/logo-electron.svg" alt="Logo" width="150" height="150">
+  </a>
 
-## Uporabljene tehnologije
+  <h1 align="center">FERI Chat</h1>
 
-- [Electron](https://www.electronjs.org/)
-- [React](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
+  <p align="center">
+    And Electron based desktop application tailored to communication between students and the faculty staff.
+  <br/>
+</p>
 
-## Zagon v dev načinu
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-1. Naloži node module z "npm i"
-2. Zaženi "npm run dev"
+<p align="start">
+The application is intended for students and teaching staff of the Faculty. The application is a seamless messaging system between users, where messaging takes place in real time. It belongs to the education sector. The application can be adapted to the specific internal system of the faculty and contains functionalities to facilitate accessibility and to keep track of the relevance of messages.
+</p>
 
-## Izgradnja binarnih datotek za produkcijo
+### Built using
 
-1. Zaženi "npm run build"
-
-## Zagon E2E testov
-
-1. Zaženi "npm run pree2e" (izgradnja binarnih datotek za testiranje)
-2. Zaženi "npm run e2e"
+* [Electron](https://www.electronjs.org/)
+* [React](https://react.dev/)
+* [Vite](https://vitejs.dev/)
+* [Firebase](https://firebase.google.com/)
