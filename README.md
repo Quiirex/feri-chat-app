@@ -14,7 +14,6 @@
 </p>
 
 <!-- ABOUT THE PROJECT -->
-
 ## About The Project
 
 <p align="start">
@@ -23,7 +22,7 @@ The application is intended for students and teaching staff of the Faculty. The 
 
 ### Built using
 
-- [Electron](https://www.electronjs.org/)
-- [React](https://react.dev/)
-- [Vite](https://vitejs.dev/)
-- [Firebase](https://firebase.google.com/)
+* [Electron](https://www.electronjs.org/)
+* [React](https://react.dev/)
+* [Vite](https://vitejs.dev/)
+* [Firebase](https://firebase.google.com/)
